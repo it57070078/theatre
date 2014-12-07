@@ -29,7 +29,7 @@ class Frame(object):
         year = IntVar()
         f_data = open('data.txt', 'r')
         data = [map(lambda x: x,i.split()) for i in f_data]
-            
+        '''
         def onClick_Increaseday(event=None):
                 day.set(day.get() + 1)
 
@@ -50,11 +50,15 @@ class Frame(object):
         def onClick_Decreaseyear(event=None):
             if year.get() > 0:
                 year.set(year.get() - 1)
+        '''
         ''' show all button'''
         def button_inframe():
-            Button(self.root, text = 'Update').place(x = 620, y = 460, width = 50, height = 20) #Update
-            Button(self.root, text = 'Close').place(x = 740, y = 460, width = 50, height = 20)  #Close program
-            Button(self.root, text = 'Detail').place(x = 680, y = 460, width = 50, height = 20) #Description of frame composition
+            Button(self.root, text = 'Update')\
+            .place(x = 620, y = 460, width = 50, height = 20) #Update
+            Button(self.root, text = 'Close', command = quit)\
+            .place(x = 740, y = 460, width = 50, height = 20)  #Close program
+            Button(self.root, text = 'Detail').\
+            place(x = 680, y = 460, width = 50, height = 20) #Description of frame composition
         def show_detail_list(data):
             y, num = 90, 1
             for i in data[-10:]:
