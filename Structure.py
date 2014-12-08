@@ -2,6 +2,7 @@ __author__ = 'mark_ts'
 import random
 import tkMessageBox
 from Tkinter import *
+
 class App:
     def __init__(self, master):
         class_room = Button(text = "Class Room", command = self.class_arrange)
