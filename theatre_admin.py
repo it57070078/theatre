@@ -22,35 +22,14 @@ class Frame(object):
         self.label.image = self.photo # keep a reference!
         self.label.place(x = 0, y = 0)
         '''show last update time'''
-        Label(self.root, text=strftime('Last update : %A %d %B %Y')).place(x = 310, y = 5)
+        Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y')).place(x = 310, y = 5)
 
         day = IntVar()
         month = IntVar()
         year = IntVar()
         f_data = open('data.txt', 'r')
         data = [map(lambda x: x,i.split()) for i in f_data]
-        '''
-        def onClick_Increaseday(event=None):
-                day.set(day.get() + 1)
 
-        def onClick_Decreaseday(event=None):
-            if day.get() > 0:
-                day.set(day.get() - 1)
-
-        def onClick_Increasemonth(event=None):
-                month.set(month.get() + 1)
-
-        def onClick_Decreasemonth(event=None):
-            if month.get() > 0:
-                month.set(month.get() - 1)
-
-        def onClick_Increaseyear(event=None):
-                year.set(year.get() + 1)
-
-        def onClick_Decreaseyear(event=None):
-            if year.get() > 0:
-                year.set(year.get() - 1)
-        '''
         ''' show all button'''
         def button_inframe():
             Button(self.root, text = 'Update')\
