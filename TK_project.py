@@ -23,7 +23,7 @@ def creator():
     tkMessageBox.showinfo(title='Creator',message='     CREAT BY \n57070041 Traisak Traisenee \n57070078 Patcharapon Sophon')
     return    
 def thanks():
-    tkMessageBox.showinfo(title='Special Thanks',message='    THANKS  \n Chotipat Pornavalai ')
+    tkMessageBox.showinfo(title='Thanks',message='    THANKS  \n Chotipat Pornavalai ')
     return
 
 
