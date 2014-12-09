@@ -4,20 +4,46 @@ from time import *
 import tkMessageBox
 import tkFont
 import ttk
+
 def naxt():
     mGui.destroy()
     nGui = Tk()
     nGui.geometry('800x600+500+200')
     nGui.title('Theatre Maneger')
+    def thank_you():
+        thank = tkMessageBox.askyesno(title = 'Thank You',message='Booking Completed')
+        if thank > 0:
+            nGui.destroy()
+            return
+    def out_1():
+        nExit = tkMessageBox.askyesno(title="Quit",message="Are You Sure")
+        if nExit > 0:
+            nGui.destroy()
+            return
+        
+    #make label header
     nlabel = Label(nGui,text='Buy Ticket',bg = 'gray', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50,y=0)
     nlabel2 = Label(nGui,text='Current Date :'+strftime('%d %B %Y'),bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 450 ,y=0)
+    nlabel3 = Label(nGui,text='select seat amount',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=50, y=470)
+    nlabel4 = Label(nGui,text='Seat    from',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=375, y=470)
+    nlabel5 = Label(nGui,text='to',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=617, y=470)
 
-    
+    #make entry box
+    choose = StringVar()
+    nentry3 = Entry(nGui,textvariable=choose).place(x= 230, y=475)
 
+    start = StringVar()
+    nentry = Entry(nGui,textvariable=start).place(x= 490,y= 475)
 
+    stop = StringVar()
+    nentry2 = Entry(nGui,textvariable=stop).place(x= 640,y= 475)
 
+    #make buttom nGui
+    nbutton = Button(text = 'Summit',command = thank_you).place(x=300,y=530)
+    nbutton2 = Button(text = 'Quit',command = out_1).place(x=400,y=530)
 
     nGui.config(background = 'gray')
+ 
 def out():
     mExit = tkMessageBox.askyesno(title="Quit",message="Are You Sure")
     if mExit > 0:
@@ -56,6 +82,7 @@ def pic_4():
     header = Label(image = header_pic)
     header.image = header_pic 
     header.place(x = 8, y = 420)
+#name movie
 def get_movie(name, time):
     movielabel = Label(text= name,bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=225 ,y=550)
     roundlabel = Label(text= time,bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=450 ,y=550)
@@ -72,17 +99,17 @@ def time_select(mGui):
             if count == 5:
                 y += 35
                 x = 440
-            Button(mGui, text=str(j),command = get_movie(i[0],j)).place(x = x, y = y)
-            print i[0] , j
+            temp = Button(text=str(j)).place(x = x, y = y)
             x += 50
             count += 1
         if count > 5:
             y -= 35
         y += 110
-        
+    
 mGui = Tk() 
 mGui.geometry('800x600+550+200')
 mGui.title('Theatre Manager')
+mGui.resizable(width=FALSE, height=FALSE)
 #make label
 mlabel = Label(text='BOX OFFICE',bg = 'gray', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50 ,y=0)
 mlabel2 = Label(text='Current Date :'+strftime('%d %B %Y'),bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=5)
@@ -90,8 +117,6 @@ mlabel3 = Label(text='Movies',bg = 'gray',  font = tkFont.Font(size = 10, weight
 mlabel4 = Label(text='Round Time',bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
 mlabel5 = Label(text='Current Movie :',bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=75 ,y=550)
 mlabel6 = Label(text='Round :',bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=365 ,y=550)
- 
-
 
 #make buttom
 mbutton = Button(text = 'Summit',command = naxt).place(x=550,y=550)
@@ -123,10 +148,7 @@ canvas_7 = Canvas(mGui,height = 100,width= 270,bg = '#2E8B57').place(x=430,y=310
 canvas_8 = Canvas(mGui,height = 100,width= 270,bg = '#2E8B57').place(x=430,y=420)
 
 
-
 pic_1(),pic_2(),pic_3(),pic_4()
 time_select(mGui)
 mGui.config(menu = menubar, background= 'gray')
-
-
 mGui.mainloop()
