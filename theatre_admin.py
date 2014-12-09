@@ -25,15 +25,30 @@ class Theatre:
             header = Label(image = header_pic)
             header.image = header_pic # keep a reference!
             header.place(x = 0, y = 0)
+
+            '''stat part'''
+            stat_pic = PhotoImage(file = "stat.gif")
+            stat = Label(image = stat_pic)
+            stat.image = stat_pic # keep a reference!
+            stat.place(x = 15, y = 238)
+
+            '''round time'''
+            time_pic = PhotoImage(file = "time.gif")
+            time = Label(image = time_pic)
+            time.image = time_pic # keep a reference!
+            time.place(x = 438, y = 250)
+
+
             self.update_time()
 
-
+        template()
+        
         self.button_inframe()
         self.show_detail_list()
         self.show_overview()
         self.round_manage()
 
-        template()
+
         mainloop()
 
     def update_time(self):
@@ -66,27 +81,28 @@ class Theatre:
             num -= 1
 
     def show_overview(self):
+        stat_pic = PhotoImage(file = "stat.gif")
 
         total_seat = ' Audience : ' + str(sum([int(x[4]) for x in self.data]))
         total_income = 'Income : ' + str(sum([int(x[5]) for x in self.data]))
 
-        Label(self.root, text='Statistic').place(x = 50, y = 250)
-        Label(self.root, text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
-        Label(self.root, text='Most of week : - ').place(x = 30, y = 300)
-        Label(self.root, text='Most of month : - ').place(x = 30, y = 320)
+        Label(self.root, fg='blue', text='Statistic').place(x = 50, y = 250)
+        Label(self.root, bg='#00be8f', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
+        Label(self.root, bg='#00be8f', text='Most of week : - ').place(x = 30, y = 300)
+        Label(self.root, bg='#00be8f', text='Most of month : - ').place(x = 30, y = 320)
 
-        Label(self.root, text='Snack : - $   Drink : - $').place(x = 30, y = 340)
-        Label(self.root, text='Total sold ticket in week : ').place(x = 30, y = 360)
-        Label(self.root, text='Total sold ticket in month : ').place(x = 30, y = 380)
+        Label(self.root, bg='#00be8f', text='Snack : - $   Drink : - $').place(x = 30, y = 340)
+        Label(self.root, bg='#00be8f', text='Total sold ticket in week : ').place(x = 30, y = 360)
+        Label(self.root, bg='#00be8f', text='Total sold ticket in month : ').place(x = 30, y = 380)
 
-        Label(self.root, text='Present day stat').place(x = 50, y = 410)
-        Label(self.root, text=total_seat).place(x = 30, y = 430)
-        Label(self.root, text=total_income).place(x = 150, y = 430)
+        Label(self.root, fg='blue', text=' Present day stat ').place(x = 52, y = 410)
+        Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
+        Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
 
     def round_manage(self):
         '''Enable/Disable time for each cinema'''
         y,time = 280, ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
-        Label(self.root, text='Cinema').place(x = 580, y = 235)
+        Label(self.root, fg='blue', text='Cinema').place(x = 580, y = 235)
         Label(self.root, text='Time').place(x = 450, y = 255)
 
         for j in xrange(6):
