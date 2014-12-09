@@ -70,12 +70,13 @@ class Theatre:
     def show_detail_list(self):
         """ show list of data and detail (included date,movie,time,name,amout, price ,seat)"""
         y, num = 90, len(self.data)
-        for i in self.data[-10:]:
-            line = str(num)+'.'+(' '*10)
-            line += i[0][5:15].center(12) + i[1].rjust(30) + i[2].rjust(30)
-            line += (' '*20) + i[3].ljust(40)
-            line += (' '*10) + str(int(i[4])) + i[5].center(50)
-            line += str(i[6][:2] + ' - ' + i[6][2:])
+        data =  self.data
+        data.reverse()
+        for i in data[-num:-(num-7)]:
+            seat = str(i[6][:2] + ' - ' + i[6][2:])
+            time = i[1]
+            name = i[3].capitalize()
+            line = '{0:12}{1:40}{2:30}{3:30}{4:35}{5:12}{6:20}{7:20}'.format(str(num)+'.', i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
             Label(self.root, bg='black', fg='#00be8f', text=line).place(x = 5, y = y)
             y += 20
             num -= 1
@@ -88,12 +89,12 @@ class Theatre:
 
         Label(self.root, fg='blue', text='Statistic').place(x = 50, y = 250)
         Label(self.root, bg='#00be8f', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
-        Label(self.root, bg='#00be8f', text='Most of week : - ').place(x = 30, y = 300)
-        Label(self.root, bg='#00be8f', text='Most of month : - ').place(x = 30, y = 320)
+        Label(self.root, bg='#00be8f', text='Most of week  :').place(x = 40, y = 300)
+        Label(self.root, bg='#00be8f', text='Most of month  :').place(x = 40, y = 320)
 
-        Label(self.root, bg='#00be8f', text='Snack : - $   Drink : - $').place(x = 30, y = 340)
-        Label(self.root, bg='#00be8f', text='Total sold ticket in week : ').place(x = 30, y = 360)
-        Label(self.root, bg='#00be8f', text='Total sold ticket in month : ').place(x = 30, y = 380)
+        Label(self.root, bg='#00be8f', text='Total sold ticket '+'_'*30).place(x = 30, y = 340)
+        Label(self.root, bg='#00be8f', text='In week  :').place(x = 40, y = 360)
+        Label(self.root, bg='#00be8f', text='In month  :').place(x = 40, y = 380)
 
         Label(self.root, fg='blue', text=' Present day stat ').place(x = 52, y = 410)
         Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
