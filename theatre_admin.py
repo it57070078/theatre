@@ -102,6 +102,8 @@ class Theatre:
 
     var_list = []
     chkbut_list = []
+    time = ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
+
     def show_current_time(self):
         """
         Show checkbutton box state
@@ -116,14 +118,15 @@ class Theatre:
                 x += 45
             print ''
             y += 25
+
     def round_manage(self):
 
         '''
         Declare Value of Check button
         Enable/Disable time for each cinema
         '''
+        time,y = self.time, 280
 
-        y,time = 280, ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
         Label(self.root, fg='blue', text='Cinema').place(x = 580, y = 235)
         Label(self.root, text='Time').place(x = 450, y = 255)
 
@@ -155,8 +158,23 @@ class Theatre:
     def edit_time(self):
         """read and write new edit showtime"""
         self.show_current_time()
+        time = self.time
         time_data = open('time.txt', 'r+')
         show_time = [map(lambda x: x,i.split()) for i in time_data]
+        cmp_time = [list(x) for x in zip(*self.var_list)]
+
+        new_time = []
+        for i in xrange(len(cmp_time)):
+            new_time.append([])
+            for j in xrange(len(cmp_time[i])):
+                if cmp_time[i][j].get():
+                    new_time[i].append(time[j])
+
+        for i in new_time:
+            print i
+
+
+
 
 
 
