@@ -38,18 +38,17 @@ class Theatre:
             time.image = time_pic # keep a reference!
             time.place(x = 438, y = 250)
 
-
             self.update_time()
 
         template()
-        
+
+        self.round_manage()
         self.button_inframe()
         self.show_detail_list()
         self.show_overview()
-        self.round_manage()
-
 
         mainloop()
+
 
     def update_time(self):
         '''show last update time'''
@@ -60,7 +59,7 @@ class Theatre:
 
     def button_inframe(self):
         ''' show all button'''
-        Button(self.root, text = 'Update', command=self.edit_time)\
+        Button(self.root, text = 'Show' , command=self.edit_time() )\
         .place(x = 550, y = 460, width = 50, height = 20) #Update
         Button(self.root, text = 'Close', command = quit)\
         .place(x = 690, y = 460, width = 50, height = 20)  #Close program
@@ -78,14 +77,14 @@ class Theatre:
             text = ['black', '#00be8f'][color == 'black']
             seat = str(i[6][:2] + ' - ' + i[6][2:])
             time = i[1]
-            name = i[3].capitalize()
+            name = i[3][:20].capitalize()
             line = ((str(num)+'.'), i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
-            line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<25}{0[4]:<50}'.format(line)
-            line2 = '{0[5]:<12}{0[6]:>20}{0[7]:>25}'.format(line)
+            line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
+            line2 = '{0[5]:<15}{0[6]:^30}{0[7]:^25}'.format(line)
             txt1 = Label(self.root, bg=color, fg=text, text=line1)
             txt1.place(x = 5, y = y)
-            txt2 = Label(self.root, bg=color, fg=text, text=line2)
-            txt2.place(x = 530, y = y)
+            txt2 = Label(self.root, bg=color, fg=text, text=line2, width=40)
+            txt2.place(x = 500, y = y)
             y += 20
             num -= 1
 
@@ -107,6 +106,10 @@ class Theatre:
         Label(self.root, fg='blue', text=' Present day stat ').place(x = 52, y = 410)
         Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
         Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
+
+    var_list = []
+    chkbut_list = []
+    time = ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
 
     def round_manage(self):
 
@@ -144,9 +147,6 @@ class Theatre:
                 chkbut_list[i].append(check_but)
             y += 25
 
-    var_list = []
-    chkbut_list = []
-    time = ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
 
     def show_current_time(self):
         """
@@ -186,15 +186,6 @@ class Theatre:
         for i in xrange(len(new_time)):
             print serial[i], ' '.join(new_time[i])
             time_data.write(str(str(serial[i])+' '+ ' '.join(new_time[i]))+'\n')
-
-
-
-
-
-
-
-
-
 
 Theatre()
 
