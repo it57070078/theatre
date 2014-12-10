@@ -11,7 +11,14 @@ def naxt():
     nGui.geometry('800x600+500+200')
     nGui.title('Theatre Maneger')
     def thank_you():
-        thank = tkMessageBox.askyesno(title = 'Thank You',message='Booking Completed')
+        check = choose.get() #check incorrect input
+        if check.isdigit() == False and '.' not in check:
+            tkMessageBox.showinfo(message='Incorrect Input \n Please Try Again.')
+            return
+        
+        select = int(choose.get())
+        price = (select * 80)
+        thank = tkMessageBox.askyesno(title = 'Thank You',message='     Booking Completed \n     Total  =  '+  str(price) + '    Bath')
         if thank > 0:
             nGui.destroy()
             return
@@ -24,13 +31,10 @@ def naxt():
     #make label header
     nlabel = Label(nGui,text='Buy Ticket',bg = 'gray', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50,y=0)
     nlabel2 = Label(nGui,text='Current Date :'+strftime('%d %B %Y'),bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 450 ,y=0)
-    nlabel3 = Label(nGui,text='select seat amount',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=50, y=470)
     nlabel4 = Label(nGui,text='Seat    from',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=375, y=470)
     nlabel5 = Label(nGui,text='to',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=617, y=470)
 
     #make entry box
-    choose = StringVar()
-    nentry3 = Entry(nGui,textvariable=choose).place(x= 230, y=475)
 
     start = StringVar()
     nentry = Entry(nGui,textvariable=start).place(x= 490,y= 475)
@@ -41,7 +45,13 @@ def naxt():
     #make buttom nGui
     nbutton = Button(text = 'Summit',command = thank_you).place(x=300,y=530)
     nbutton2 = Button(text = 'Quit',command = out_1).place(x=400,y=530)
+    
+    #make seat input
+    nlabel3 = Label(nGui,text='select seat amount',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=50, y=470)
+    choose = StringVar()
+    select = Entry(nGui,textvariable=choose).place(x= 230, y=475)
 
+    
     nGui.config(background = 'gray')
  
 def out():
@@ -105,6 +115,7 @@ def time_select(mGui):
         if count > 5:
             y -= 35
         y += 110
+
     
 mGui = Tk() 
 mGui.geometry('800x600+550+200')
