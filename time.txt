@@ -1,7 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of b04ef4f... complete time management
 001 10.45 11.30 12.15 13.00 13.45 14.30 15.15
 002 10.45 11.30 12.15 13.45 14.30 15.15
 003 10.45 11.30 13.00 14.30 15.15
 004 11.30 12.45 13.00 14.30 15.15
+<<<<<<< HEAD
+>>>>>>> parent of b04ef4f... complete time management
+=======
 >>>>>>> parent of b04ef4f... complete time management

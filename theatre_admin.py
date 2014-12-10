@@ -75,6 +75,7 @@ class Theatre:
             seat = str(i[6][:2] + ' - ' + i[6][2:])
             time = i[1]
 <<<<<<< HEAD
+<<<<<<< HEAD
             name = i[3][:20].capitalize()
             line = ((str(num)+'.'), i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
             line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
@@ -83,6 +84,11 @@ class Theatre:
             txt1.place(x = 5, y = y)
             txt2 = Label(self.root, bg=color, fg=text, text=line2, width=40)
             txt2.place(x = 500, y = y)
+=======
+            name = i[3].capitalize()
+            line = '{0:12}{1:40}{2:30}{3:30}{4:35}{5:12}{6:20}{7:20}'.format(str(num)+'.', i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
+            Label(self.root, bg='black', fg='#00be8f', text=line).place(x = 5, y = y)
+>>>>>>> parent of b04ef4f... complete time management
 =======
             name = i[3].capitalize()
             line = '{0:12}{1:40}{2:30}{3:30}{4:35}{5:12}{6:20}{7:20}'.format(str(num)+'.', i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
@@ -115,7 +121,10 @@ class Theatre:
     time = ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of b04ef4f... complete time management
     def show_current_time(self):
         """
         Show checkbutton box state
@@ -131,6 +140,9 @@ class Theatre:
             print ''
             y += 25
 
+<<<<<<< HEAD
+>>>>>>> parent of b04ef4f... complete time management
+=======
 >>>>>>> parent of b04ef4f... complete time management
     def round_manage(self):
 
@@ -169,6 +181,7 @@ class Theatre:
             y += 25
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     def show_current_time(self):
         """
@@ -188,6 +201,8 @@ class Theatre:
 
 =======
 >>>>>>> parent of b04ef4f... complete time management
+=======
+>>>>>>> parent of b04ef4f... complete time management
     def edit_time(self):
         """read and write new edit showtime"""
         self.show_current_time()
@@ -205,6 +220,18 @@ class Theatre:
 
         for i in new_time:
             print i
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> parent of b04ef4f... complete time management
 
 Theatre()
 
