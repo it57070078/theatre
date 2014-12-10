@@ -60,7 +60,7 @@ class Theatre:
 
     def button_inframe(self):
         ''' show all button'''
-        Button(self.root, text = 'Update')\
+        Button(self.root, text = 'Update', command=self.edit_time)\
         .place(x = 550, y = 460, width = 50, height = 20) #Update
         Button(self.root, text = 'Close', command = quit)\
         .place(x = 690, y = 460, width = 50, height = 20)  #Close program
@@ -100,22 +100,67 @@ class Theatre:
         Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
         Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
 
+    var_list = []
+    chkbut_list = []
+    def show_current_time(self):
+        """
+        Show checkbutton box state
+        and Box values in console
+        """
+        y = 280
+        for i in xrange(len(self.chkbut_list)):
+            x = 495
+            for j in xrange(len(self.chkbut_list[i])):
+                print self.var_list[i][j].get(),
+                self.chkbut_list[i][j].place(x=x, y=y)
+                x += 45
+            print ''
+            y += 25
     def round_manage(self):
-        '''Enable/Disable time for each cinema'''
+
+        '''
+        Declare Value of Check button
+        Enable/Disable time for each cinema
+        '''
+
         y,time = 280, ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
         Label(self.root, fg='blue', text='Cinema').place(x = 580, y = 235)
         Label(self.root, text='Time').place(x = 450, y = 255)
 
+        time_data = open('time.txt', 'r')
+        show_time = [map(lambda x: x,i.split()) for i in time_data]
+
         for j in xrange(6):
             Label(self.root, text=str(j+1)).place(x = (500+(j*45)), y = 260)
 
+        var_list = self.var_list
+        chkbut_list = self.chkbut_list
         for i in xrange(7):
+            var_list.append([])
+            chkbut_list.append([])
             Label(self.root, text=time[i]).place(x = 450, y = y)
-            x = 450
-            for i in xrange(6):
-                x += 45
-                Checkbutton(self.root).place(x = x, y = y)
+            #x = 450
+            for j in xrange(len(show_time)):
+                #x += 45
+                var = IntVar()
+                var_list[i].append(var)
+                if time[i] in show_time[j]:
+                    var_list[i][j].set(1)
+                else :
+                    var_list[i][j].set(0)
+                check_but = Checkbutton(self.root, variable=var)
+                chkbut_list[i].append(check_but)
             y += 25
+
+    def edit_time(self):
+        """read and write new edit showtime"""
+        self.show_current_time()
+        time_data = open('time.txt', 'r+')
+        show_time = [map(lambda x: x,i.split()) for i in time_data]
+
+
+
+
 
 
 
