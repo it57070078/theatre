@@ -71,12 +71,10 @@ class Theatre:
         y, num = 90, len(self.data)
         data =  self.data
         data.reverse()
-        color = 'black'
         for i in data[-num:-(num-7)]:
-            color = ['black', '#00be8f'][color == 'black']
-            text = ['black', '#00be8f'][color == 'black']
             seat = str(i[6][:2] + ' - ' + i[6][2:])
             time = i[1]
+<<<<<<< HEAD
             name = i[3][:20].capitalize()
             line = ((str(num)+'.'), i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
             line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
@@ -85,6 +83,11 @@ class Theatre:
             txt1.place(x = 5, y = y)
             txt2 = Label(self.root, bg=color, fg=text, text=line2, width=40)
             txt2.place(x = 500, y = y)
+=======
+            name = i[3].capitalize()
+            line = '{0:12}{1:40}{2:30}{3:30}{4:35}{5:12}{6:20}{7:20}'.format(str(num)+'.', i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
+            Label(self.root, bg='black', fg='#00be8f', text=line).place(x = 5, y = y)
+>>>>>>> parent of b04ef4f... complete time management
             y += 20
             num -= 1
 
@@ -111,6 +114,24 @@ class Theatre:
     chkbut_list = []
     time = ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
 
+<<<<<<< HEAD
+=======
+    def show_current_time(self):
+        """
+        Show checkbutton box state
+        and Box values in console
+        """
+        y = 280
+        for i in xrange(len(self.chkbut_list)):
+            x = 495
+            for j in xrange(len(self.chkbut_list[i])):
+                print self.var_list[i][j].get(),
+                self.chkbut_list[i][j].place(x=x, y=y)
+                x += 45
+            print ''
+            y += 25
+
+>>>>>>> parent of b04ef4f... complete time management
     def round_manage(self):
 
         '''
@@ -147,6 +168,7 @@ class Theatre:
                 chkbut_list[i].append(check_but)
             y += 25
 
+<<<<<<< HEAD
 
     def show_current_time(self):
         """
@@ -164,16 +186,14 @@ class Theatre:
             y += 25
 
 
+=======
+>>>>>>> parent of b04ef4f... complete time management
     def edit_time(self):
         """read and write new edit showtime"""
         self.show_current_time()
         time = self.time
-
-        time_data = open('time.txt', 'r')
-        serial = [i[:3] for i in time_data]
-        time_data.close()
-        time_data = open('time.txt', 'wt')
-
+        time_data = open('time.txt', 'r+')
+        show_time = [map(lambda x: x,i.split()) for i in time_data]
         cmp_time = [list(x) for x in zip(*self.var_list)]
 
         new_time = []
@@ -183,9 +203,8 @@ class Theatre:
                 if cmp_time[i][j].get():
                     new_time[i].append(time[j])
 
-        for i in xrange(len(new_time)):
-            print serial[i], ' '.join(new_time[i])
-            time_data.write(str(str(serial[i])+' '+ ' '.join(new_time[i]))+'\n')
+        for i in new_time:
+            print i
 
 Theatre()
 
