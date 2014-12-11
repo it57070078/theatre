@@ -46,6 +46,7 @@ class Theatre:
         self.button_inframe()
         self.show_detail_list()
         self.show_overview()
+        self.show_current_time('show')
 
         mainloop()
 
@@ -59,12 +60,21 @@ class Theatre:
 
     def button_inframe(self):
         ''' show all button'''
-        Button(self.root, text = 'Update' , command=self.edit_time)\
-        .place(x = 550, y = 460, width = 50, height = 20) #Update
-        Button(self.root, text = 'Close', command = quit)\
-        .place(x = 690, y = 460, width = 50, height = 20)  #Close program
-        Button(self.root, text = 'Detail').\
-        place(x = 620, y = 460, width = 50, height = 20) #Description of frame composition
+
+        close_butt = Button(self.root, text = 'Close', command = quit)
+        close_butt.place(x = 690, y = 460, width = 50, height = 20)  #Close program
+        self.button_list.append(close_butt)
+
+        detail_but = Button(self.root, text = 'Detail')
+        detail_but.place(x = 620, y = 460, width = 50, height = 20) #Description of frame composition
+        self.button_list.append(detail_but)
+
+        edit_but = Button(self.root, text = 'Edit' , command=self.edit_time)
+        edit_but.place(x = 440, y = 460, width = 50, height = 20) #Open Edit mode
+        self.button_list.append(edit_but)
+
+        update_butt = Button(self.root, text = 'Update' , command=self.save_setting)
+        self.button_list.append(update_butt)
 
     def show_detail_list(self,color = 'black'):
         """ show list of data and detail (included date,movie,time,name,amout, price ,seat)"""
@@ -106,6 +116,7 @@ class Theatre:
         Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
         Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
 
+    button_list = []
     var_list = []
     chkbut_list = []
     time = ['10.45', '11.30', '12.15', '13.00', '13.45', '14.30', '15.15']
@@ -148,40 +159,45 @@ class Theatre:
                 chkbut_list[i].append(check_but)
             y += 25
 
-    def show_current_time(self):
+    def show_current_time(self, order):
         """
         Show checkbutton box state
         and Box values in console
         """
+        print 'Opening function show_current_time() as '+str(order)+' mode'
+        status = ['disabled', 'normal'][order == 'edit']
+
+        edit_but = self.button_list[2]
+        if status == 'disabled':
+            edit_but.config(state='normal')
+        else :
+            edit_but.config(state='disable')
         y = 280
         for i in xrange(len(self.chkbut_list)):
             x = 495
             for j in xrange(len(self.chkbut_list[i])):
-                print self.var_list[i][j].get(),
+                #print self.var_list[i][j].get(), #for check current values of each checkboxes button
+                self.chkbut_list[i][j].config(state=status)
                 self.chkbut_list[i][j].place(x=x, y=y)
                 x += 45
-            print ''
-            y += 25
-
-
-    def show_current_time(self):
-        """
-        Show checkbutton box state
-        and Box values in console
-        """
-        y = 280
-        for i in xrange(len(self.chkbut_list)):
-            x = 495
-            for j in xrange(len(self.chkbut_list[i])):
-                print self.var_list[i][j].get(),
-                self.chkbut_list[i][j].place(x=x, y=y)
-                x += 45
-            print ''
+            #print ''
             y += 25
 
     def edit_time(self):
         """read and write new edit showtime"""
-        self.show_current_time()
+        print 'Opening function edit_time()'
+        self.show_current_time('edit')
+        update_butt = self.button_list[3]
+        update_butt.place(x = 550, y = 460, width = 50, height = 20) #Update
+
+    def save_setting(self):
+        """"saved new setting"""
+        update_butt = self.button_list[3]
+        update_butt.place_forget()
+        self.show_current_time('show')
+        for i in self.button_list:
+            print i
+        print 'saved new setting'
         time = self.time
         time_data = open('time.txt', 'r')
         serial = [i[:3] for i in time_data]
@@ -194,9 +210,9 @@ class Theatre:
         for i in xrange(len(cmp_time)):
             new_time.append([])
             for j in xrange(len(cmp_time[i])):
-                if cmp_time[i][j].get():
+                 if cmp_time[i][j].get():
                     new_time[i].append(time[j])
-
+        print 'Current setting is ...'
         for i in xrange(len(new_time)):
             print serial[i], ' '.join(new_time[i])
             time_data.write(str(str(serial[i])+' '+ ' '.join(new_time[i]))+'\n')
