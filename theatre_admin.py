@@ -56,7 +56,9 @@ class Theatre:
         Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y')).place(x = 310, y = 5)
 
     f_data = open('data.txt', 'r')
-    data = [map(lambda x: x,i.split()) for i in f_data] #[(date_12/12/2557), (001),(1045),(K.Guide),(01),(80),(D1D1)]
+    data = [map(lambda x: x,i.split()) for i in f_data]
+    #[(date_12/12/2557), (001),(1045),(K.Guide),(01),(80),(D1D1)]
+    #------0----------------1-----2------3--------4----5-----6---
 
     def button_inframe(self):
         ''' show all button'''
@@ -100,16 +102,15 @@ class Theatre:
         print 'opening show_overview()'
         stat_pic = PhotoImage(file = "stat.gif")
         data = self.data
-
-        total_seat = ' Audience : ' + str(sum([int(x[4]) for x in data]))
-        total_income = 'Income : ' + str(sum([int(x[5]) for x in data]))
-        #most_week = str(max[map(lambda x : if int(x[0][5:7])-int(strftime('%d')) >= 7,data)])
-        #print most_week
+        date = self.map_date()
+        result = self.analysis_data(date)
+        total_seat = ' Audience : ' + str(result['audience'])
+        total_income = 'Income : ' + str(result['income'])
 
         Label(self.root, fg='blue', text='Statistic').place(x = 50, y = 250)
         Label(self.root, bg='#00be8f', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
-        Label(self.root, bg='#00be8f', text='Most of week  :').place(x = 40, y = 300)
-        Label(self.root, bg='#00be8f', text='Most of month  :').place(x = 40, y = 320)
+        Label(self.root, bg='#00be8f', text='Most of week  :  '+str(result['most_week'])).place(x = 40, y = 300)
+        Label(self.root, bg='#00be8f', text='Most of month  :  '+str(result['most_month'])).place(x = 40, y = 320)
 
         Label(self.root, bg='#00be8f', text='Total sold ticket '+'_'*30).place(x = 30, y = 340)
         Label(self.root, bg='#00be8f', text='In week  :').place(x = 40, y = 360)
@@ -118,6 +119,52 @@ class Theatre:
         Label(self.root, fg='blue', text=' Present day stat ').place(x = 52, y = 410)
         Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
         Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
+
+    def map_date(self):
+        tran_int = lambda alist : map(int,alist)
+        date = [tran_int(x[0][5:15].split('/')) for x in self.data]
+        return date
+
+    def analysis_data(self, date):
+        result = dict()
+        date_now = (int(strftime('%d')), int(strftime('%m')), int(strftime('%Y'))+543)
+        day = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        result['audience'] = sum(map(int, [x[4] for x in self.data]))
+        result['income'] = sum(map(int, [x[5] for x in self.data]))
+        week, month = [], []
+        if date_now[0] > 7:
+            for i in xrange(len(self.data)):
+                if date[i][0] > 1 and date[i][1] == date_now[1]:
+                    month.append(self.data[i])
+                if date[i][0] > date_now[0]-7:
+                    week.append(self.data[i])
+        else :
+            for i in xrange(len(self.data)):
+                if date[i][1] >= date_now[1] - 1:
+                    if date[i][0] <= date_now[0] and date[i][1] == date_now[1]:
+                        month.append(self.data[i])
+                    elif date[i][0] > date_now[0] and date[i][1] == date_now[1]-1:
+                        month.append(self.data[i])
+
+
+
+
+
+        for i in month:
+            print i
+
+        #most of week
+        result['most_week'] = max([x[1] for x in self.data[-7:]])
+        #most of month
+        result['most_month'] = max([x[1] for x in month])
+
+        #total sold in week
+        ##result['total_week'] = sum([x[4] for x in self.data[-7:]])
+
+        #total sold in month
+        ##result['total_month'] = sum([x[4] for x in month])
+
+        return result # dict of stat , for show in overview part
 
     button_list = []
     var_list = []
