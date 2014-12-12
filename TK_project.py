@@ -15,7 +15,6 @@ def naxt():
         if check.isdigit() == False and '.' not in check:
             tkMessageBox.showinfo(message='Incorrect Input \n Please Try Again.')
             return
-        
         select = int(choose.get())
         price = (select * 80)
         thank = tkMessageBox.askyesno(title = 'Thank You',message='     Booking Completed \n     Total  =  '+  str(price) + '    Bath')
@@ -27,12 +26,12 @@ def naxt():
         if nExit > 0:
             nGui.destroy()
             return
-        
+
     #make label header
-    nlabel = Label(nGui,text='Buy Ticket',bg = 'gray', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50,y=0)
-    nlabel2 = Label(nGui,text='Current Date :'+strftime('%d %B %Y'),bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 450 ,y=0)
-    nlabel4 = Label(nGui,text='Seat    from',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=375, y=470)
-    nlabel5 = Label(nGui,text='to',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=617, y=470)
+    nlabel = Label(nGui,text='Buy Ticket',bg = '#464646', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50,y=0)
+    nlabel2 = Label(nGui,text='Current Date :'+strftime('%d %B %Y'),bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=0)
+    nlabel4 = Label(nGui,text='Seat    from',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=375, y=470)
+    nlabel5 = Label(nGui,text='to',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=617, y=470)
 
     #make entry box
 
@@ -47,12 +46,12 @@ def naxt():
     nbutton2 = Button(text = 'Quit',command = out_1).place(x=400,y=530)
     
     #make seat input
-    nlabel3 = Label(nGui,text='select seat amount',bg = 'gray',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=50, y=470)
+    nlabel3 = Label(nGui,text='select seat amount',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=50, y=470)
     choose = StringVar()
     select = Entry(nGui,textvariable=choose).place(x= 230, y=475)
 
     
-    nGui.config(background = 'gray')
+    nGui.config(background = '#464646')
  
 def out():
     mExit = tkMessageBox.askyesno(title="Quit",message="Are You Sure")
@@ -93,9 +92,9 @@ def pic_4():
     header.image = header_pic 
     header.place(x = 8, y = 420)
 #name movie
-def get_movie(name, time):
-    movielabel = Label(text= name,bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=225 ,y=550)
-    roundlabel = Label(text= time,bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=450 ,y=550)
+##def get_movie(name, time):
+##    movielabel = Label(text= name,bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=225 ,y=550)
+##    roundlabel = Label(text= time,bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=450 ,y=550)
 
 #make time select
 def time_select(mGui):
@@ -122,12 +121,12 @@ mGui.geometry('800x600+550+200')
 mGui.title('Theatre Manager')
 mGui.resizable(width=FALSE, height=FALSE)
 #make label
-mlabel = Label(text='BOX OFFICE',bg = 'gray', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50 ,y=0)
-mlabel2 = Label(text='Current Date :'+strftime('%d %B %Y'),bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=5)
-mlabel3 = Label(text='Movies',bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=175 ,y=60)
-mlabel4 = Label(text='Round Time',bg = 'gray',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
-mlabel5 = Label(text='Current Movie :',bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=75 ,y=550)
-mlabel6 = Label(text='Round :',bg = 'gray',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=365 ,y=550)
+mlabel = Label(text='BOX OFFICE',bg = '#464646', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50 ,y=0)
+mlabel2 = Label(text='Current Date :'+strftime('%d %B %Y'),bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=5)
+mlabel3 = Label(text='Movies',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=175 ,y=60)
+mlabel4 = Label(text='Round Time',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
+mlabel5 = Label(text='Current Movie :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=75 ,y=550)
+mlabel6 = Label(text='Round :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=365 ,y=550)
 
 #make buttom
 mbutton = Button(text = 'Summit',command = naxt).place(x=550,y=550)
