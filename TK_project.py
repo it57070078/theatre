@@ -30,25 +30,30 @@ def naxt():
     #make label header
     nlabel = Label(nGui,text='Buy Ticket',bg = '#464646', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50,y=0)
     nlabel2 = Label(nGui,text='Current Date :'+strftime('%d %B %Y'),bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=0)
-    nlabel4 = Label(nGui,text='Seat    from',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=375, y=470)
-    nlabel5 = Label(nGui,text='to',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=617, y=470)
+    nlabel4 = Label(nGui,text='Seat    from',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=513, y=470)
+    nlabel5 = Label(nGui,text='to',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=675, y=470)
 
     #make entry box
 
     start = StringVar()
-    nentry = Entry(nGui,textvariable=start).place(x= 490,y= 475)
+    nentry = Entry(nGui,width = 5,textvariable=start).place(x= 632,y= 475)
 
     stop = StringVar()
-    nentry2 = Entry(nGui,textvariable=stop).place(x= 640,y= 475)
+    nentry2 = Entry(nGui,width = 5,textvariable=stop).place(x= 700,y= 475)
 
     #make buttom nGui
     nbutton = Button(text = 'Summit',command = thank_you).place(x=300,y=530)
     nbutton2 = Button(text = 'Quit',command = out_1).place(x=400,y=530)
     
+    #make name input
+    nlabel6 = Label(nGui,text='Name',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=30, y=470)
+    name = StringVar()
+    name_data = Entry(nGui,width = 32,textvariable=name).place(x= 92 ,y=475)
+
     #make seat input
-    nlabel3 = Label(nGui,text='select seat amount',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=50, y=470)
+    nlabel3 = Label(nGui,text='Select seat amount',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=295, y=470)
     choose = StringVar()
-    select = Entry(nGui,textvariable=choose).place(x= 230, y=475)
+    select = Entry(nGui,width = 5,textvariable=choose).place(x= 470, y=475)
 
     
     nGui.config(background = '#464646')
