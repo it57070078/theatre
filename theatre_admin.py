@@ -56,7 +56,7 @@ class Theatre:
         Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y')).place(x = 310, y = 5)
 
     f_data = open('data.txt', 'r')
-    data = [map(lambda x: x,i.split()) for i in f_data]
+    data = [map(lambda x: x,i.split()) for i in f_data] #[(date_12/12/2557), (001),(1045),(K.Guide),(01),(80),(D1D1)]
 
     def button_inframe(self):
         ''' show all button'''
@@ -76,32 +76,35 @@ class Theatre:
         update_butt = Button(self.root, text = 'Update' , command=self.save_setting)
         self.button_list.append(update_butt)
 
-    def show_detail_list(self,color = 'black'):
+    def show_detail_list(self,bg_color = 'black'):
         """ show list of data and detail (included date,movie,time,name,amout, price ,seat)"""
         y, num = 90, len(self.data)
         data =  self.data
         data.reverse()
         for i in data[-num:-(num-7)]:
-            color = ['black', '#00be8f'][color == 'black']
-            text = ['black', '#00be8f'][color == 'black']
+            text = '#00be8f'
             seat = str(i[6][:2] + ' - ' + i[6][2:])
             time = i[1]
             name = i[3][:20].capitalize()
             line = ((str(num)+'.'), i[0][5:15], i[1], i[2], name, str(int(i[4])), i[5], seat)
             line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
             line2 = '{0[5]:<15}{0[6]:^30}{0[7]:^25}'.format(line)
-            txt1 = Label(self.root, bg=color, fg=text, text=line1)
+            txt1 = Label(self.root, bg=bg_color, fg=text, text=line1)
             txt1.place(x = 5, y = y)
-            txt2 = Label(self.root, bg=color, fg=text, text=line2, width=40)
+            txt2 = Label(self.root, bg=bg_color, fg=text, text=line2, width=40)
             txt2.place(x = 500, y = y)
             y += 20
             num -= 1
 
     def show_overview(self):
+        print 'opening show_overview()'
         stat_pic = PhotoImage(file = "stat.gif")
+        data = self.data
 
-        total_seat = ' Audience : ' + str(sum([int(x[4]) for x in self.data]))
-        total_income = 'Income : ' + str(sum([int(x[5]) for x in self.data]))
+        total_seat = ' Audience : ' + str(sum([int(x[4]) for x in data]))
+        total_income = 'Income : ' + str(sum([int(x[5]) for x in data]))
+        #most_week = str(max[map(lambda x : if int(x[0][5:7])-int(strftime('%d')) >= 7,data)])
+        #print most_week
 
         Label(self.root, fg='blue', text='Statistic').place(x = 50, y = 250)
         Label(self.root, bg='#00be8f', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)

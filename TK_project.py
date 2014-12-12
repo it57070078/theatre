@@ -102,23 +102,59 @@ def pic_4():
 ##    roundlabel = Label(text= time,bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=450 ,y=550)
 
 #make time select
+time_button = []
+time_val = []
+def selected(i, j):
+    print 'opening selected',
+    data = time_val[i][j].get()
+    Label(text=data[:4],fg = 'white', bg ='#464646').place(x=225 ,y=550)
+    Label(text=data[-5:],fg = 'white', bg ='#464646').place(x=450 ,y=550)
+
 def time_select(mGui):
     time_data = open('time.txt', 'r')
     time = [map(lambda x: x,i.split()) for i in time_data]
     y = 100
-    for i in time:
+
+    for i in xrange(len(time)):
+        print i
+        time_val.append([])
+        time_button.append([])
+        for j in xrange(1, len(time[i])):
+            print 'time[i][j] == ',time[i][j],'i ='+str(i),'j='+str(j)
+            val = StringVar()
+            val.set(time[i][0]+' '+str(time[i][j]))
+            time_val[i].append(val)
+            temp = Button(text=str(time[i][j]), textvariable = val.get())
+            print 'time_val >>>',time_val[i][j-1].get()
+            temp.config(command = lambda : selected(i, j))
+            time_button[i].append(temp)
+            print '--------------'
+
+    for i in time_val:
+        for j in i:
+            print j.get()+'    ',
+        print ''
+    print ''
+    for i in time_button:
+        for j in i:
+            print  j['textvariable'],'   ',
+        print ''
+
+    for i in time_button:
         x = 440
         count = 0
-        for j in i[1:]:
+        for j in i:
             if count == 5:
                 y += 35
                 x = 440
-            temp = Button(text=str(j)).place(x = x, y = y)
+            j.place(x = x, y = y)
             x += 50
             count += 1
         if count > 5:
             y -= 35
         y += 110
+
+
 
     
 mGui = Tk() 
