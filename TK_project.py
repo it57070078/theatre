@@ -161,5 +161,5 @@ canvas_8 = Canvas(mGui,height = 100,width= 270,bg = '#2E8B57').place(x=430,y=420
 
 pic_1(),pic_2(),pic_3(),pic_4()
 time_select(mGui)
-mGui.config(menu = menubar, background= 'gray')
+mGui.config(menu = menubar, background= '#464646')
 mGui.mainloop()
