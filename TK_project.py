@@ -104,10 +104,16 @@ def pic_4():
 #make time select
 time_button = []
 time_val = []
+line = []
 def selected(val):
-    print 'opening selected',
+    print 'opening selected'
+    line = []
     data = val
-    print data
+    date = 'date_'+strftime('%d/%m')+str(int(strftime('%Y'))+543)
+    line.append(date)
+    line.append(data[:4])
+    line.append(data[-5:])
+    print line
     Label(text=data[:4],fg = 'white', bg ='#464646').place(x=225 ,y=550)
     Label(text=data[-5:],fg = 'white', bg ='#464646').place(x=450 ,y=550)
 
@@ -117,20 +123,16 @@ def time_select(mGui):
     y = 100
 
     for i in xrange(len(time)):
-        print i
         time_val.append([])
         time_button.append([])
         for j in xrange(1, len(time[i])):
-            print 'time[i][j] == ',time[i][j],'i ='+str(i),'j='+str(j)
-            #val = StringVar()
-            #val.set(time[i][0]+' '+str(time[i][j]))
             val = time[i][0]+' '+str(time[i][j])
             time_val[i].append(time[i][0]+' '+str(time[i][j]))
-            #temp = Button(text=str(time[i][j]), textvariable = val.get())
             temp = Button(text=str(time[i][j]))
-            #print 'time_val >>>',time_val[i][j-1].get()
             temp.config(command = lambda value = val: selected(value))
             time_button[i].append(temp)
+    for i in time_button:
+        print i
     for i in time_button:
         x = 440
         count = 0
