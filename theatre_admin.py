@@ -7,7 +7,7 @@ Administrator Part
 from Tkinter import *
 from time import *
 from datetime import datetime
-from collections import defaultdict
+import tkMessageBox
 import sys
 
 class Theatre:
@@ -100,7 +100,7 @@ class Theatre:
             print data[j][1]
         r, c = 0, 0
         list_bg = Label(self.root,bg=bg_color)
-        list_bg.place(x=5, y=y,width = 800,height = 140)
+        list_bg.place(x=0, y=y,width = 800,height = 140)
         for i in data[-num:-(num-7)]:
             x = 5
             text = '#00be8f'
@@ -110,7 +110,7 @@ class Theatre:
             line = ((str(num)+'.'), i[0][5:15], i[1], time, name, str(int(i[4])), i[5], seat)
             line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
             line2 = '{0[5]:<15}{0[6]:^30}{0[7]:^25}'.format(line)
-            txt1 = Label(list_bg, bg=bg_color, fg=text, text=line1)
+            txt1 = LabelFrame(list_bg, bg=bg_color, fg=text, text=line1)
             #txt1.place(x = x, y = y)
             txt1.grid(row=r,column=c,sticky=W)
             r += 1
@@ -278,6 +278,7 @@ class Theatre:
         for i in xrange(len(new_time)):
             print serial[i], ' '.join(new_time[i])
             time_data.write(str(str(serial[i])+' '+ ' '.join(new_time[i]))+'\n')
+        tkMessageBox.showinfo(title='Saved',message='Your new setting is updated')
 
 Theatre()
 
