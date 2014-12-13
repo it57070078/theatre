@@ -54,7 +54,7 @@ class Theatre:
 
     def update_date(self):
         '''show last update time'''
-        Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y')).place(x = 310, y = 5)
+        Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y'), font = 'angsana 12 italic').place(x = 310, y = 15)
 
     f_data = open('data.txt', 'r')
     data = [map(lambda x: x, i.split()) for i in f_data]
@@ -62,9 +62,7 @@ class Theatre:
     #------0----------------1-----2------3--------4----5-----6---
 
     movie_data = open('movie_name.txt', 'r')
-    movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.readlines()])
-    for i in movie_name:
-        print i
+    movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
 
     def button_inframe(self):
         ''' show all button'''
@@ -73,7 +71,7 @@ class Theatre:
         close_butt.place(x = 690, y = 460, width = 50, height = 20)  #Close program
         self.button_list.append(close_butt)
 
-        detail_but = Button(self.root, text = 'Detail')
+        detail_but = Button(self.root, text = 'Detail',command = self.show_movie_list)
         detail_but.place(x = 620, y = 460, width = 50, height = 20) #Description of frame composition
         self.button_list.append(detail_but)
 
@@ -98,26 +96,24 @@ class Theatre:
             else :
                 data[j][1] = 'Unknown'
             print data[j][1]
-        r, c = 0, 0
+
+        r = 0
         list_bg = Label(self.root,bg=bg_color)
         list_bg.place(x=0, y=y,width = 800,height = 140)
+        w = [3, 15, 14, 14, 24, 4, 16, 12]
         for i in data[-num:-(num-7)]:
-            x = 5
             text = '#00be8f'
-            seat = str(i[6][:2] + ' - ' + i[6][2:])
-            name = i[3][:20].capitalize()
+            seq =  str(num)+'.'
+            watch_date =  i[0][5:15]
             time = i[2][:2]+' : '+i[2][2:]
-            line = ((str(num)+'.'), i[0][5:15], i[1], time, name, str(int(i[4])), i[5], seat)
-            line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
-            line2 = '{0[5]:<15}{0[6]:^30}{0[7]:^25}'.format(line)
-            txt1 = LabelFrame(list_bg, bg=bg_color, fg=text, text=line1)
-            #txt1.place(x = x, y = y)
-            txt1.grid(row=r,column=c,sticky=W)
-            r += 1
-            txt2 = Label(self.root, bg=bg_color, fg=text, text=line2, width=40)
-            #txt2.place(x = 500, y = y)
-            y += 20
+            name = i[3][:20].capitalize()
+            seat = str(i[6][:2] + ' - ' + i[6][2:])
+            line = [seq, watch_date, i[1], time, name, str(int(i[4])), i[5], seat]
+
+            for j in xrange(8):
+                Label(list_bg, bg=bg_color, fg=text, text=line[j], width= w[j], justify='center').grid(row=r, column=j, sticky=W)
             num -= 1
+            r += 1
 
     ###------------------------represen theatre statisctic-----------------###
 
@@ -279,6 +275,18 @@ class Theatre:
             print serial[i], ' '.join(new_time[i])
             time_data.write(str(str(serial[i])+' '+ ' '.join(new_time[i]))+'\n')
         tkMessageBox.showinfo(title='Saved',message='Your new setting is updated')
+
+    def show_movie_list(self):
+        info = Label(self.root, text='info', width=30, height=50, justify='left')
+        info.place(x=295, y=250)
+        Label(info, text='Movie list',justify='left', bg='gray', fg='white').grid(row=0)
+        for i in sorted(self.movie_name.keys())[:4]:
+            Label(info, text=i,justify='left', width=3).grid()
+            Label(info, text=str(self.movie_name[i]), justify='right').grid()
+        def close():
+            info.place_forget()
+        Button(info, text="Close", command= close).grid()
+
 
 Theatre()
 
