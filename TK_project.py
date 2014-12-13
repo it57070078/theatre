@@ -10,6 +10,33 @@ def naxt():
     nGui = Tk()
     nGui.geometry('800x600+500+200')
     nGui.title('Theatre Maneger')
+
+    seat = []
+    def var_states(val):
+        seat = []
+        
+        print "Select Seat: " +str(val.get())
+        if len(seat) == 0:
+            seat.append(val.get())
+        else:
+            if (val.get())[0] == seat[0][0]:
+                seat.append(val.get())
+            else:
+                print 'Can not select different row'
+
+    def show_all():
+        a = sorted(seat)
+        print 'you selected seat ', a[0],' - ', a[-1]
+
+    seat_char = "-ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    for i in xrange(1,10):
+        for j in xrange(9):
+            var2 = StringVar()
+            a = Checkbutton(nGui, text=seat_char[i]+str(j+1))
+            a.config(variable=var2.set(seat_char[i]+str(j+1)))
+            a.config(command = lambda v = var2: var_states(v))
+            a.grid(row = i , column =j ,sticky= W)
+            
     def thank_you():
         check = choose.get() #check incorrect input
         if check.isdigit() == False and '.' not in check:
@@ -151,7 +178,7 @@ mGui.geometry('800x600+550+200')
 mGui.title('Theatre Manager')
 mGui.resizable(width=FALSE, height=FALSE)
 #make label
-mlabel = Label(text='BOX OFFICE',fg='white',bg = '#464646', font = tkFont.Font(size = 50)).place(x=50 ,y=10)
+mlabel = Label(text='BOX OFFICE',fg='white',bg = '#464646', font = tkFont.Font(size = 30)).place(x=50 ,y=10)
 mlabel2 = Label(text='Current Date :'+strftime('%d %B %Y'),bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=5)
 mlabel3 = Label(text='Movies', fg='#2E8B57', bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=175 ,y=60)
 mlabel4 = Label(text='Round Time', fg='#2E8B57',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
