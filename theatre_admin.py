@@ -287,6 +287,5 @@ class Theatre:
             info.place_forget()
         Button(info, text="Close", command= close).grid()
 
-
 Theatre()
 
