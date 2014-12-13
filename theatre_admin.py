@@ -62,10 +62,9 @@ class Theatre:
     #------0----------------1-----2------3--------4----5-----6---
 
     movie_data = open('movie_name.txt', 'r')
-    movie_name = dict( (i,j) for i,j in [map(lambda x: x, i.split(',')) for i in movie_data.readlines()])
-
-
-
+    movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.readlines()])
+    for i in movie_name:
+        print i
 
     def button_inframe(self):
         ''' show all button'''
@@ -95,11 +94,13 @@ class Theatre:
         for j in xrange(len(data)):
             print data[j][1],'to',
             if data[j][1] in self.movie_name.keys():
-                data[j][1] = str(self.movie_name[str(data[j][1])]) + '('+ str(data[j][1])+')'
+                data[j][1] = str(self.movie_name[str(data[j][1])])
             else :
                 data[j][1] = 'Unknown'
             print data[j][1]
-
+        r, c = 0, 0
+        list_bg = Label(self.root,bg=bg_color)
+        list_bg.place(x=5, y=y,width = 800,height = 140)
         for i in data[-num:-(num-7)]:
             x = 5
             text = '#00be8f'
@@ -109,10 +110,12 @@ class Theatre:
             line = ((str(num)+'.'), i[0][5:15], i[1], time, name, str(int(i[4])), i[5], seat)
             line1 = '{0[0]:<12}{0[1]:<40}{0[2]:<30}{0[3]:<20}{0[4]:^40}'.format(line)
             line2 = '{0[5]:<15}{0[6]:^30}{0[7]:^25}'.format(line)
-            txt1 = Label(self.root, bg=bg_color, fg=text, text=line1)
-            txt1.place(x = x, y = y)
+            txt1 = Label(list_bg, bg=bg_color, fg=text, text=line1)
+            #txt1.place(x = x, y = y)
+            txt1.grid(row=r,column=c,sticky=W)
+            r += 1
             txt2 = Label(self.root, bg=bg_color, fg=text, text=line2, width=40)
-            txt2.place(x = 500, y = y)
+            #txt2.place(x = 500, y = y)
             y += 20
             num -= 1
 
@@ -127,9 +130,9 @@ class Theatre:
         total_income = 'Income : ' + str(result['income'])
 
         Label(self.root, fg='blue', text='Statistic').place(x = 50, y = 250)
-        Label(self.root, bg='#00be8f', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
-        Label(self.root, bg='#00be8f', text='Most of week  :  '+str(result['most_week'])).place(x = 40, y = 300)
-        Label(self.root, bg='#00be8f', text='Most of month  :  '+str(result['most_month'])).place(x = 40, y = 320)
+        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
+        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Most of week  :  '+str(result['most_week'])).place(x = 40, y = 300)
+        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Most of month  :  '+str(result['most_month'])).place(x = 40, y = 320)
 
         Label(self.root, bg='#00be8f', fg='white',text='Total sold ticket '+'_'*30).place(x = 30, y = 340)
         Label(self.root, bg='#00be8f', text='In week  :  '+str(result['total_week'])).place(x = 40, y = 360)

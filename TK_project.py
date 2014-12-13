@@ -103,8 +103,8 @@ def pic_4():
 
 #make time select
 time_button = []
-time_val = []
 line = []
+
 def selected(val):
     print 'opening selected'
     line = []
@@ -113,9 +113,9 @@ def selected(val):
     line.append(date)
     line.append(data[:4])
     line.append(data[-5:])
-    print line
-    Label(text=data[:4],fg = 'white', bg ='#464646').place(x=225 ,y=550)
-    Label(text=data[-5:],fg = 'white', bg ='#464646').place(x=450 ,y=550)
+    print 'current select  ',line
+    Label(text=data[:4],fg = 'white', bg ='#464646', font = tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=220 ,y=545)
+    Label(text=data[-5:],fg = 'white', bg ='#464646', font = tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=445 ,y=545)
 
 def time_select(mGui):
     time_data = open('time.txt', 'r')
@@ -123,16 +123,12 @@ def time_select(mGui):
     y = 100
 
     for i in xrange(len(time)):
-        time_val.append([])
         time_button.append([])
         for j in xrange(1, len(time[i])):
             val = time[i][0]+' '+str(time[i][j])
-            time_val[i].append(time[i][0]+' '+str(time[i][j]))
             temp = Button(text=str(time[i][j]))
-            temp.config(command = lambda value = val: selected(value))
+            temp.config(command = lambda value=val: selected(value))
             time_button[i].append(temp)
-    for i in time_button:
-        print i
     for i in time_button:
         x = 440
         count = 0
@@ -155,15 +151,15 @@ mGui.geometry('800x600+550+200')
 mGui.title('Theatre Manager')
 mGui.resizable(width=FALSE, height=FALSE)
 #make label
-mlabel = Label(text='BOX OFFICE',bg = '#464646', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50 ,y=0)
+mlabel = Label(text='BOX OFFICE',fg='white',bg = '#464646', font = tkFont.Font(size = 50)).place(x=50 ,y=10)
 mlabel2 = Label(text='Current Date :'+strftime('%d %B %Y'),bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=5)
-mlabel3 = Label(text='Movies',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=175 ,y=60)
-mlabel4 = Label(text='Round Time',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
+mlabel3 = Label(text='Movies', fg='#2E8B57', bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=175 ,y=60)
+mlabel4 = Label(text='Round Time', fg='#2E8B57',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
 mlabel5 = Label(text='Current Movie :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=75 ,y=550)
 mlabel6 = Label(text='Round :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=365 ,y=550)
 
 #make buttom
-mbutton = Button(text = 'Summit',command = naxt).place(x=550,y=550)
+mbutton = Button(text = 'Submit',command = naxt).place(x=560,y=550)
 mbutton2 = Button(text = 'Quit',command = out).place(x=650,y=550)
 
 #make About menu
