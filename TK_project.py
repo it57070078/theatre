@@ -28,70 +28,7 @@ def cont():
         if thank > 0:
             nGui.destroy()
             return
-    def out_1():
-        nExit = tkMessageBox.askyesno(title="Quit",message="Are You Sure")
-        if nExit > 0:
-            nGui.destroy()
-        return
 
-    #make label header
-    nlabel = Label(nGui,text='Buy Ticket',bg = '#464646', font = tkFont.Font(size = 30, weight=tkFont.BOLD)).place(x=50,y=0)
-    nlabel2 = Label(nGui,text='Current Date :'+strftime('%d %B %Y'),bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.NORMAL)).place(x= 300 ,y=0)
-    nlabel4 = Label(nGui,text='Seat    from',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=513, y=470)
-    nlabel5 = Label(nGui,text='to',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=675, y=470)
-
-    #make entry box
-
-    start = StringVar()
-    nentry = Entry(nGui,width = 5,textvariable=start).place(x= 632,y= 475)
-
-    stop = StringVar()
-    nentry2 = Entry(nGui,width = 5,textvariable=stop).place(x= 700,y= 475)
-
-    #make buttom nGui
-    nbutton = Button(text = 'Summit',command = thank_you).place(x=300,y=530)
-    nbutton2 = Button(text = 'Quit',command = out_1).place(x=400,y=530)
-
-    #make name input
-    nlabel6 = Label(nGui,text='Name',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=30, y=470)
-    name = StringVar()
-    name_data = Entry(nGui,width = 32,textvariable=name).place(x= 92 ,y=475)
-
-    #make seat input
-    nlabel3 = Label(nGui,text='Select seat amount',bg = '#464646',font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=295, y=470)
-    choose = StringVar()
-    select = Entry(nGui,width = 5,textvariable=choose).place(x= 470, y=475)
-
-    nGui.config(background = '#464646')
-
-
-seat = []
-def var_states(val):
-    print "Select Seat: " + str(val.get())
-    if len(seat) == 0:
-        seat.append(val.get())
-    else:
-        if (val.get())[0] == seat[0][0]:
-            seat.append(val.get())
-        else:
-            print 'Can not select different row'
-
-def show_all():
-    a = sorted(seat)
-    print 'you selected seat ', a[0],' - ', a[-1]
-
-def show_seat():
-        seat_bg = Label(nGui,text = 'here')
-        seat_bg.place(x=120 , y=120)
-
-        seat_char = "-ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        for i in xrange(1,10):
-            for j in xrange(9):
-                var2 = StringVar()
-                a = Checkbutton(nGui, text=seat_char[i]+str(j+1))
-                a.config(variable=var2.set(seat_char[i]+str(j+1)))
-                a.config(command = lambda v = var2: var_states(v))
-                a.grid(row = i , column =j ,sticky= W)
 '''
 
 #-------------------------------Done----------------------------#
@@ -99,6 +36,7 @@ def show_seat():
 #make time select
 time_button = []
 line = []
+seat = []
 
 class Home(Frame):
     """
@@ -107,7 +45,7 @@ class Home(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.home_page_template()
-        self.time_select()
+
     movie_data = open('movie_name.txt', 'r')
     movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
 
@@ -128,7 +66,7 @@ class Home(Frame):
 
         Label(text=data[-5:], fg='white', bg ='#464646', font=tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=445, y=545)
 
-    def time_select(self):
+    def time_select(self, frame_1):
         """read available times to declare buttons to listening when User pressed theirs"""
         time_data = open('time.txt', 'r')
         time = [map(lambda x: x, i.split()) for i in time_data]
@@ -138,7 +76,7 @@ class Home(Frame):
             time_button.append([])
             for j in xrange(1, len(time[i])):
                 val = time[i][0]+' '+str(time[i][j])
-                temp = Button(self.home, text=str(time[i][j]))
+                temp = Button(frame_1, text=str(time[i][j]))
                 temp.config(command = lambda value=val: self.selected(value))
                 time_button[i].append(temp)
         '''show button in frame'''
@@ -156,18 +94,83 @@ class Home(Frame):
                 y -= 35
             y += 110
 
+    def seat_part(self):
+        self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
+        frame_2 = LabelFrame(self.home, width=400,height=400, bg='#464646')
+        frame_2.place(x=80,y=150)
+        frame_3 = LabelFrame(self.home, width=100, bg='#464646')
+        frame_3.place(x=520,y=150)
+        frame_4 = LabelFrame(self.home, width=100, bg='red')
+        frame_4.place(x=80,y=650)
+
+        seat_bg = Label(frame_2,text = 'here',bg='#464646')
+        seat_bg.pack()
+
+        #make name input
+        nlabel6 = Label(frame_3,text='Name',bg = '#464646',fg = 'gray',font='Helvetica 10 italic').pack()
+
+        name = StringVar()
+        name_data = Entry(frame_3,width = 32,textvariable=name).pack()
+
+        #make seat input
+        nlabel3 = Label(frame_3,text='Selected seat',bg = '#464646', fg='gray', font='Helvetica 10 italic').pack()
+
+        def getSeatNum():
+            if len(seat) == 0:
+                return ' - '
+            else :
+                return str(seat[0], ' - ', seat[-1])
+
+        Label(frame_3,width = 32,text=getSeatNum(), fg ='black').pack()
+        butt_bar = Label(frame_3, bg = '#464646')
+        butt_bar.pack()
+        #make buttom nGui
+        nbutton = Button(butt_bar, text = 'Summit').grid(row =0,column=0)
+        def back():
+            frame_2.place_forget()
+            frame_3.place_forget()
+            self.home_page_template()
+        nbutton2 = Button(butt_bar, text = 'New movie',command = back).grid(row =0, column=1)
+
+
+        def var_states(val):
+            print "Select Seat: " + str(val.get())
+            if len(seat) == 0:
+                seat.append(val.get())
+            else:
+                if (val.get())[0] == seat[0][0]:
+                    seat.append(val.get())
+                else :
+                    print 'Can not select different row'
+
+
+        seat_char = "-ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+        for i in xrange(1,13):
+            for j in xrange(9):
+                var2 = StringVar()
+                a = Checkbutton(seat_bg, text=seat_char[i]+str(j+1), bg='#464646',)
+                a.config(variable=var2.set(seat_char[i]+str(j+1)))
+                a.config(command=lambda v = var2: var_states(v))
+                a.grid(row=i, column=j)
+
+
     def home_page_template(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
+
         frame_1 = LabelFrame(self.home, width=800,height=600, bg='#464646')
         frame_1.place(x=0,y=0)
+        def close_frame(frame):
+            frame.place_forget()
+            self.seat_part()
 
         #make buttom
-        Button(frame_1, text = 'Submit').place(x=560, y=550)
-        Button(frame_1, text = 'Quit', command=out).place(x=650, y=550)
+        Button(frame_1, text = 'Submit', command=lambda frame=frame_1:close_frame(frame)).place(x=560, y=550)
+        Button(self.home, text = 'Quit', command=out).place(x=650, y=550)
 
         #make label
-        Label(frame_1, text='BOX OFFICE', fg='white', bg = '#464646', font = tkFont.Font(size = 30)).place(x=50 ,y=10)
-        Label(frame_1, text='Current Date :'+strftime('%d %B %Y'), bg = '#464646', fg='gray', font ='Angsna 9 italic').place(x= 300 ,y=15)
+        Label(self.home, text='BOX OFFICE', fg='white', bg = '#464646', font = tkFont.Font(size = 30)).place(x=50 ,y=10)
+        Label(self.home, text='Current Date :'+strftime('%d %B %Y'), bg = '#464646', fg='gray', font ='Angsna 9 italic').place(x= 300 ,y=15)
         Label(frame_1, text='Movies', fg='#2E8B57', bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=175 ,y=60)
         Label(frame_1, text='Round Time', fg='#2E8B57',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
         Label(frame_1, text='Current Movie :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=15 ,y=550)
@@ -181,7 +184,7 @@ class Home(Frame):
         for i in xrange(4):
             Canvas(frame_1,height = 100,width= 270,bg = '#2E8B57').place(x=x+122, y=y)
             poster_pic = PhotoImage(file=pic_list[i])
-            poster = Label(image=poster_pic)
+            poster = Label(frame_1, image=poster_pic)
             poster.image = poster_pic
             poster.place(x = x, y = y-10)
             Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57').place(x=x+422, y=y)
@@ -189,8 +192,10 @@ class Home(Frame):
                   fg='white',bg='#2E8B57', font='angsna 9').place(x=x+165, y = y+35)
             Label(frame_1, text=str(self.movie_name[pic_list[i][:3]])[:25],\
                   fg='white',bg='#2E8B57', font='Helvetica 12 bold italic').place(x=x+165, y = y+10)
-
             y += 110
+
+        self.time_select(frame_1)
+
 
 def out():
     if tkMessageBox.askyesno(title="Quit",message="Are You Sure"):
