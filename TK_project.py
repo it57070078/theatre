@@ -5,38 +5,13 @@ import tkMessageBox
 import tkFont
 import ttk
 
-class SeatPart(Frame):
-    ''' Identify some available seat and save data to exist file'''
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-
-'''
-def cont():
-    mGui.destroy()
-    nGui = Tk()
-    nGui.geometry('800x600+500+200')
-    nGui.title('Theatre Manager')
-
-    def thank_you():
-        check = choose.get() #check incorrect input
-        if check.isdigit() == False and '.' not in check:
-            tkMessageBox.showinfo(message='Incorrect Input \n Please Try Again.')
-            return
-        select = int(choose.get())
-        price = (select * 80)
-        thank = tkMessageBox.askyesno(title = 'Thank You',message='     Booking Completed \n     Total  =  '+  str(price) + '    Bath')
-        if thank > 0:
-            nGui.destroy()
-            return
-
-'''
-
-#-------------------------------Done----------------------------#
-
 #make time select
 time_button = []
 line = []
 seat = []
+pic_list = ["001.gif", "002.gif", "003.gif", "004.gif"]
+pic_dict = dict((i[:3],i) for i in pic_list)
+print pic_dict
 
 class Home(Frame):
     """
@@ -56,7 +31,7 @@ class Home(Frame):
         data = val
         date = 'date_'+strftime('%d/%m')+str(int(strftime('%Y'))+543)
         line.append(date)
-        line.append(data[:4])
+        line.append(data[:3])
         line.append(data[-5:])
         print 'current select  ', line
         Label(text=self.movie_name[data[:3]][:12], fg='white', bg ='#464646',\
@@ -96,6 +71,11 @@ class Home(Frame):
 
     def seat_part(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
+        pic = PhotoImage(file='seat_bg.gif')
+        poster = Label(self.home, image=pic)
+        poster.image = pic
+        poster.place(x=0, y=55)
+
         frame_2 = LabelFrame(self.home, width=400,height=400, bg='#464646')
         frame_2.place(x=80,y=150)
         frame_3 = LabelFrame(self.home, width=100, bg='#464646')
@@ -125,12 +105,21 @@ class Home(Frame):
         butt_bar = Label(frame_3, bg = '#464646')
         butt_bar.pack()
         #make buttom nGui
-        nbutton = Button(butt_bar, text = 'Summit').grid(row =0,column=0)
+        nbutton = Button(butt_bar, text = 'Submit').grid(row =0,column=0)
         def back():
             frame_2.place_forget()
             frame_3.place_forget()
             self.home_page_template()
         nbutton2 = Button(butt_bar, text = 'New movie',command = back).grid(row =0, column=1)
+
+
+
+        '''
+        pic = PhotoImage(file=pic_dict[line[1]])
+        poster = Label(frame_3, image=pic)
+        poster.image = pic
+        poster.grid(row=1)
+        '''
 
 
         def var_states(val):
@@ -178,7 +167,6 @@ class Home(Frame):
 
         #make Content
 
-        pic_list = ["001.gif", "002.gif", "003.gif", "004.gif"]
 
         y, x = 95, 10 #Define content position here
         for i in xrange(4):
