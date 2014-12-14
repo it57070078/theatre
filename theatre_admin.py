@@ -88,14 +88,13 @@ class Theatre:
         data = self.data
         data.reverse()
 
+
         #get movie name
         for j in xrange(len(data)):
-            print data[j][1],'to',
             if data[j][1] in self.movie_name.keys():
-                data[j][1] = str(self.movie_name[str(data[j][1])])
+                data[j][1] = str(self.movie_name[data[j][1]])
             else :
                 data[j][1] = 'Unknown'
-            print data[j][1]
 
         r = 0
         list_bg = Label(self.root,bg=bg_color)
@@ -126,9 +125,12 @@ class Theatre:
         total_income = 'Income : ' + str(result['income'])
 
         Label(self.root, fg='blue', text='Statistic').place(x = 50, y = 250)
-        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Max audience  Cinema : -     Movie : -').place(x = 30, y = 280)
-        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Most of week  :  '+str(result['most_week'])).place(x = 40, y = 300)
-        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Most of month  :  '+str(result['most_month'])).place(x = 40, y = 320)
+
+        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Max audience  Movie : '+str(result['maxMovie'])).place(x=30, y=280)
+        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Most of week  :  '+\
+            str(result['most_week'])).place(x = 40, y = 300)
+        Label(self.root, bg='#00be8f', font = 'angsana 9 italic', text='Most of month  :  '+\
+            str(result['most_month'])).place(x = 40, y = 320)
 
         Label(self.root, bg='#00be8f', fg='white',text='Total sold ticket '+'_'*30).place(x = 30, y = 340)
         Label(self.root, bg='#00be8f', text='In week  :  '+str(result['total_week'])).place(x = 40, y = 360)
@@ -153,9 +155,7 @@ class Theatre:
         result['audience'] = sum(map(int, [x[4] for x in self.data]))
         result['income'] = sum(map(int, [x[5] for x in self.data]))
 
-        print 'sold day'
-        for x in sold_day:
-            print x
+        result['maxMovie'] = max([x[1] for x in self.data])
 
         cmp_date_month = lambda x : abs(day_now - datetime(int(x[2]), int(x[1]), int(x[0]))).days >= 30
         cmp_date_week = lambda x : abs(day_now - datetime(int(x[2]), int(x[1]), int(x[0]))).days >= 7
