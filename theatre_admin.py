@@ -134,9 +134,9 @@ class Theatre:
         Label(self.root, bg='#00be8f', text='In week  :  '+str(result['total_week'])).place(x = 40, y = 360)
         Label(self.root, bg='#00be8f', text='In month  :  '+str(result['total_week'])).place(x = 40, y = 380)
 
-        Label(self.root, fg='blue', text=' Present day stat ').place(x = 52, y = 410)
         Label(self.root, bg='#00be8f', text=total_seat).place(x = 30, y = 430)
         Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
+        Label(self.root, fg='blue', text='    Total stat          ').place(x = 52, y = 410)
 
     def map_date(self):
         tran_int = lambda alist : map(int, alist)

@@ -135,7 +135,13 @@ class Home(Frame):
             print self.line
             data = ' '.join(self.line)
             print data
-            if tkMessageBox.askyesno(title="Confirm", message="Your ticket is \n"+data):
+            if tkMessageBox.askyesno(title="Confirm", message="Your ticket is \n  "+self.line[0]+\
+                    '\n Movie     : '+ self.movie_name[self.line[1]]+\
+                    '\n Show Time : '+ self.line[2]+ \
+                    '\n Customer  : '+ self.line[3]+ \
+                    '\n Amount    : '+ self.line[4]+ \
+                    '\n Price     : '+ self.line[5]+' Bath'+ \
+                    '\n Seat No.  : '+ self.line[6]):
                 data_list = open('data.txt', 'a+')
                 data_list.writelines(data+'\n')
                 tkMessageBox.showinfo(title='Success!',message='Saved\nYour ticket is available')
