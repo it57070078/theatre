@@ -7,11 +7,10 @@ import ttk
 
 #make time select
 time_button = []
-line = []
+seat_button = []
 seat = []
 pic_list = ["001.gif", "002.gif", "003.gif", "004.gif"]
 pic_dict = dict((i[:3],i) for i in pic_list)
-print pic_dict
 
 class Home(Frame):
     """
@@ -24,10 +23,12 @@ class Home(Frame):
     movie_data = open('movie_name.txt', 'r')
     movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
 
+    line = []
     def selected(self, val):
         """show button value after press, and append to current select name "line" """
         print 'opening selected'
-        line = []
+        self.line = []
+        line = self.line
         data = val
         date = 'date_'+strftime('%d/%m')+str(int(strftime('%Y'))+543)
         line.append(date)
@@ -40,6 +41,8 @@ class Home(Frame):
               font='Angsna 9 italic').place(x=155, y=575)
 
         Label(text=data[-5:], fg='white', bg ='#464646', font=tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=445, y=545)
+
+        self.SUBMIT.config(state='normal')
 
     def time_select(self, frame_1):
         """read available times to declare buttons to listening when User pressed theirs"""
@@ -54,6 +57,7 @@ class Home(Frame):
                 temp = Button(frame_1, text=str(time[i][j]))
                 temp.config(command = lambda value=val: self.selected(value))
                 time_button[i].append(temp)
+
         '''show button in frame'''
         for i in time_button:
             x = 440
@@ -87,30 +91,59 @@ class Home(Frame):
         seat_bg.pack()
 
         #make name input
-        nlabel6 = Label(frame_3,text='Name',bg = '#464646',fg = 'gray',font='Helvetica 10 italic').pack()
+        nlabel6 = Label(frame_3,text='Name',bg = '#464646', fg = 'gray',font='Helvetica 10 italic').pack()
 
-        name = StringVar()
-        name_data = Entry(frame_3,width = 32,textvariable=name).pack()
+        self.name = StringVar()
+        name_data = Entry(frame_3, width = 32, justify='center', textvariable=self.name)
+        name_data.pack()
+
 
         #make seat input
-        nlabel3 = Label(frame_3,text='Selected seat',bg = '#464646', fg='gray', font='Helvetica 10 italic').pack()
+        Label(frame_3,text='Selected seat',bg = '#464646', fg='gray', font='Helvetica 10 italic').pack()
 
-        def getSeatNum():
-            if len(seat) == 0:
-                return ' - '
-            else :
-                return str(seat[0], ' - ', seat[-1])
+        self.current_seat = Label(frame_3, text ='-- check some available seat --', font='Angsna 10 italic',fg='red')
+        self.current_seat.pack()
 
-        Label(frame_3,width = 32,text=getSeatNum(), fg ='black').pack()
+
         butt_bar = Label(frame_3, bg = '#464646')
         butt_bar.pack()
         #make buttom nGui
-        nbutton = Button(butt_bar, text = 'Submit').grid(row =0,column=0)
+        def send_data():
+            price = 80 # define ticket cost here
+            self.line.append(str(self.name.get()))
+            qty = len(seat)
+            self.line.append(str(qty).zfill(2))
+            self.line.append(str(qty*price))
+            self.line.append(str(seat[0]+seat[-1]))
+            self.line[2] = self.line[2][:2] + self.line[2][-2:]
+            print self.line
+            data = ' '.join(self.line)
+            if tkMessageBox.askyesno(title="Confirm", message="Your ticket is \n"+data):
+                data_list = open('data.txt', 'a+')
+                data_list.write(data + '\n')
+                tkMessageBox.showinfo(title='Success!',message='Saved\nYour ticket is available')
+                run_app(Home)
+
+
+        Button(butt_bar, text = 'Submit', command =send_data).grid(row =0,column=0)
+
         def back():
             frame_2.place_forget()
             frame_3.place_forget()
             self.home_page_template()
-        nbutton2 = Button(butt_bar, text = 'New movie',command = back).grid(row =0, column=1)
+        def clear_all():
+            if len(seat):
+                for i in seat_button:
+                    i.deselect()
+                self.current_seat.config(text='-- check some available seat --')
+                seat.__delslice__(0, len(seat)-1)
+                seat.remove(seat[0])
+                print seat
+
+            else:
+                pass
+        Button(butt_bar, text = 'New movie',command = back).grid(row =0, column=1)
+        Button(butt_bar, text = 'Clear',command = clear_all).grid(row =0, column=2)
 
 
 
@@ -121,27 +154,31 @@ class Home(Frame):
         poster.grid(row=1)
         '''
 
-
-        def var_states(val):
+        def var_states(val, chkbut):
             print "Select Seat: " + str(val.get())
             if len(seat) == 0:
                 seat.append(val.get())
+                self.current_seat.config(text=seat[0])
             else:
-                if (val.get())[0] == seat[0][0]:
+                if (val.get())[0] == seat[0][0] or len(seat) == 0:
                     seat.append(val.get())
+                    seat.sort()
+                    self.current_seat.config(text=str(seat[0]+' - '+seat[-1]))
                 else :
-                    print 'Can not select different row'
-
+                    tkMessageBox.showinfo(title='Sorry',message='You can not select different row \n Try again please...')
+                    chkbut.deselect()
+                    clear_all()
 
         seat_char = "-ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         for i in xrange(1,13):
             for j in xrange(9):
                 var2 = StringVar()
-                a = Checkbutton(seat_bg, text=seat_char[i]+str(j+1), bg='#464646',)
-                a.config(variable=var2.set(seat_char[i]+str(j+1)))
-                a.config(command=lambda v = var2: var_states(v))
-                a.grid(row=i, column=j)
+                chkbut = Checkbutton(seat_bg, text=seat_char[i]+str(j+1), bg='#464646',)
+                chkbut.config(variable=var2.set(seat_char[i]+str(j+1)))
+                chkbut.config(command=lambda v=var2, but=chkbut: var_states(v, but))
+                chkbut.grid(row=i, column=j)
+                seat_button.append(chkbut)
 
 
     def home_page_template(self):
@@ -154,7 +191,8 @@ class Home(Frame):
             self.seat_part()
 
         #make buttom
-        Button(frame_1, text = 'Submit', command=lambda frame=frame_1:close_frame(frame)).place(x=560, y=550)
+        self.SUBMIT = Button(frame_1, text = 'Submit', state='disabled', command=lambda frame=frame_1:close_frame(frame))
+        self.SUBMIT.place(x=560, y=550)
         Button(self.home, text = 'Quit', command=out).place(x=650, y=550)
 
         #make label
