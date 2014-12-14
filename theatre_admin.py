@@ -139,7 +139,7 @@ class Theatre:
         Label(self.root, bg='#00be8f', text=total_income).place(x = 150, y = 430)
 
     def map_date(self):
-        tran_int = lambda alist : map(int,alist)
+        tran_int = lambda alist : map(int, alist)
         date = [tran_int(x[0][5:15].split('/')) for x in self.data]
         return date
 
@@ -152,6 +152,10 @@ class Theatre:
 
         result['audience'] = sum(map(int, [x[4] for x in self.data]))
         result['income'] = sum(map(int, [x[5] for x in self.data]))
+
+        print 'sold day'
+        for x in sold_day:
+            print x
 
         cmp_date_month = lambda x : abs(day_now - datetime(int(x[2]), int(x[1]), int(x[0]))).days >= 30
         cmp_date_week = lambda x : abs(day_now - datetime(int(x[2]), int(x[1]), int(x[0]))).days >= 7

@@ -30,7 +30,7 @@ class Home(Frame):
         self.line = []
         line = self.line
         data = val
-        date = 'date_'+strftime('%d/%m')+str(int(strftime('%Y'))+543)
+        date = 'date_'+strftime('%d/%m/')+str(int(strftime('%Y'))+543)
         line.append(date)
         line.append(data[:3])
         line.append(data[-5:])
@@ -48,35 +48,41 @@ class Home(Frame):
         """read available times to declare buttons to listening when User pressed theirs"""
         time_data = open('time.txt', 'r')
         time = [map(lambda x: x, i.split()) for i in time_data]
-        y = 100
+
+        #showtime_bg = Label(frame_1, width=100)
+        #showtime_bg.place(x=440, y =100)
+
+        for i in self.content:
+            print self.content
         '''define default value and command for all button'''
+
         for i in xrange(len(time)):
             time_button.append([])
             for j in xrange(1, len(time[i])):
                 val = time[i][0]+' '+str(time[i][j])
-                temp = Button(frame_1, text=str(time[i][j]))
+                temp = Button(self.content[i], text=str(time[i][j]), bg = 'black', fg='#2E8B57', width=6, font='Helvetica 10 bold italic')
                 temp.config(command = lambda value=val: self.selected(value))
                 time_button[i].append(temp)
 
         '''show button in frame'''
+        y = 5
         for i in time_button:
-            x = 440
-            count = 0
+            x , y, count = 5, 5, 0
             for j in i:
-                if count == 5:
+                if count == 4:
+                    x = 5
                     y += 35
-                    x = 440
-                j.place(x = x, y = y)
-                x += 50
+                j.place(x=x, y=y)
+                x += 60
                 count += 1
-            if count > 5:
-                y -= 35
-            y += 110
+
+
 
     def seat_part(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
+
         pic = PhotoImage(file='seat_bg.gif')
-        poster = Label(self.home, image=pic)
+        poster = Label(image=pic)
         poster.image = pic
         poster.place(x=0, y=55)
 
@@ -108,9 +114,19 @@ class Home(Frame):
         butt_bar = Label(frame_3, bg = '#464646')
         butt_bar.pack()
         #make buttom nGui
+        def back():
+            frame_2.place_forget()
+            frame_3.place_forget()
+            frame_4.place_forget()
+            poster.place_forget()
+            self.frame.place(x=0, y=0)
+
         def send_data():
             price = 80 # define ticket cost here
-            self.line.append(str(self.name.get()))
+            if len(self.name.get()) != 0:
+                self.line.append(str(self.name.get()))
+            else :
+                self.line.append('-Anonymous-')
             qty = len(seat)
             self.line.append(str(qty).zfill(2))
             self.line.append(str(qty*price))
@@ -118,19 +134,16 @@ class Home(Frame):
             self.line[2] = self.line[2][:2] + self.line[2][-2:]
             print self.line
             data = ' '.join(self.line)
+            print data
             if tkMessageBox.askyesno(title="Confirm", message="Your ticket is \n"+data):
                 data_list = open('data.txt', 'a+')
-                data_list.write(data + '\n')
+                data_list.writelines(data+'\n')
                 tkMessageBox.showinfo(title='Success!',message='Saved\nYour ticket is available')
-                run_app(Home)
+            back()
 
 
         Button(butt_bar, text = 'Submit', command =send_data).grid(row =0,column=0)
 
-        def back():
-            frame_2.place_forget()
-            frame_3.place_forget()
-            self.home_page_template()
         def clear_all():
             if len(seat):
                 for i in seat_button:
@@ -180,11 +193,12 @@ class Home(Frame):
                 chkbut.grid(row=i, column=j)
                 seat_button.append(chkbut)
 
+    content = []
 
     def home_page_template(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
-
-        frame_1 = LabelFrame(self.home, width=800,height=600, bg='#464646')
+        self.frame = LabelFrame(self.home, width=800,height=600, bg='#464646')
+        frame_1 = self.frame
         frame_1.place(x=0,y=0)
         def close_frame(frame):
             frame.place_forget()
@@ -213,7 +227,9 @@ class Home(Frame):
             poster = Label(frame_1, image=poster_pic)
             poster.image = poster_pic
             poster.place(x = x, y = y-10)
-            Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57').place(x=x+422, y=y)
+            show_time = Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57')
+            show_time.place(x=x+422, y=y)
+            self.content.append(show_time)
             Label(frame_1, text=str('(Cinema '+str(int(pic_list[i][:3]))+')'), \
                   fg='white',bg='#2E8B57', font='angsna 9').place(x=x+165, y = y+35)
             Label(frame_1, text=str(self.movie_name[pic_list[i][:3]])[:25],\
