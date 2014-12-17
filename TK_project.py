@@ -7,7 +7,6 @@ import ttk
 
 #Upload to Branch Test
 #make time select
-time_button = []
 seat_button = []
 seat = []
 pic_list = ["001.gif", "002.gif", "003.gif", "004.gif"]
@@ -19,13 +18,13 @@ class Home(Frame):
     """
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
         self.home_page_template()
 
     movie_data = open('movie_name.txt', 'r')
     movie_name = dict((i, j) for i, j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
 
     line = []
+    content = []
     def selected(self, val):
         """show button value after press, and append to current select name "line" """
         print 'opening selected'
@@ -52,11 +51,38 @@ class Home(Frame):
         time_data = open('time.txt', 'r')
         time = [map(lambda x: x, i.split()) for i in time_data]
 
+        time_button = []
         #showtime_bg = Label(frame_1, width=100)
         #showtime_bg.place(x=440, y =100)
 
-        for i in self.content:
-            print self.content
+        if len(self.content) > 0:
+            for i in self.content:
+                print i,'to',
+                i = []
+                print i
+
+        '''Make Content for add time button in their frame'''
+        #Define content position here
+        y, x = 95, 10
+        for i in xrange(4):
+            Canvas(frame_1, height = 100, width= 270, bg='#2E8B57').place(x=x+122, y=y)
+            poster_pic = PhotoImage(file=pic_list[i])
+            poster = Label(frame_1, image=poster_pic)
+            poster.image = poster_pic
+            poster.place(x=x, y=y-10)
+            show_time = Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57')
+            show_time.place(x=x+422, y=y)
+            self.content.append(show_time)
+            Label(frame_1, text=str('(Cinema '+str(int(pic_list[i][:3]))+')'),
+                  fg='white',bg='#2E8B57', font='angsna 9').place(x=x+165, y=y+35)
+            Label(frame_1, text=str(self.movie_name[pic_list[i][:3]])[:25],
+                  fg='white',bg='#2E8B57', font='Helvetica 12 bold italic').place(x=x+165, y =y+10)
+            y += 110
+
+        if len(self.content) > 0:
+            print 'after'
+            for i in self.content:
+                print i
 
         '''define default value and command for all button'''
         for i in xrange(len(time)):
@@ -224,8 +250,6 @@ class Home(Frame):
                             del booked[0]
                 seat_button.append(chkbut)
 
-    content = []
-
     def check_booked(self):
         '''check booked seat'''
         seat_file = open("data.txt", 'r')
@@ -233,13 +257,13 @@ class Home(Frame):
         booked_all = [j for j in [map(lambda x: x, i.split()) for i in seat_file.read().splitlines()]]
         booked = [[x[1], x[2][:2]+'.'+x[2][-2:], x[6]] for x in booked_all if x[0] == today]
         seat_file.close()
-        print booked
         return booked
 
     def home_page_template(self):
+        self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
+        self.frame = LabelFrame(self.home, width=800,height=600, bg='#464646')
         frame_1 = self.frame
         frame_1.place(x=0, y=0)
-        self.content[:] = []
         def close_frame(frame):
             frame.place_forget()
             self.seat_part()
@@ -256,25 +280,6 @@ class Home(Frame):
         Label(frame_1, text='Round Time', fg='#2E8B57',bg = '#464646',  font = tkFont.Font(size = 10, weight=tkFont.BOLD)).place(x=500 ,y=60)
         Label(frame_1, text='Current Movie :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=15 ,y=550)
         Label(frame_1, text='Round :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=365 ,y=550)
-
-        #make Content
-
-
-        y, x = 95, 10 #Define content position here
-        for i in xrange(4):
-            Canvas(frame_1,height = 100,width= 270,bg = '#2E8B57').place(x=x+122, y=y)
-            poster_pic = PhotoImage(file=pic_list[i])
-            poster = Label(frame_1, image=poster_pic)
-            poster.image = poster_pic
-            poster.place(x = x, y = y-10)
-            show_time = Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57')
-            show_time.place(x=x+422, y=y)
-            self.content.append(show_time)
-            Label(frame_1, text=str('(Cinema '+str(int(pic_list[i][:3]))+')'), \
-                  fg='white',bg='#2E8B57', font='angsna 9').place(x=x+165, y = y+35)
-            Label(frame_1, text=str(self.movie_name[pic_list[i][:3]])[:25],\
-                  fg='white',bg='#2E8B57', font='Helvetica 12 bold italic').place(x=x+165, y = y+10)
-            y += 110
 
         self.time_select(frame_1)
 

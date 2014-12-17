@@ -50,7 +50,7 @@ class Theatre():
         self.show_detail_list()
         self.show_overview()
         self.show_current_time('show')
-
+        mainloop()
 
     def update_date(self):
         '''show last update time'''
