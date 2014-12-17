@@ -7,6 +7,8 @@ import ttk
 
 #Upload to Branch Test
 #make time select
+
+time_button = []
 seat_button = []
 seat = []
 pic_list = ["001.gif", "002.gif", "003.gif", "004.gif"]
@@ -37,12 +39,16 @@ class Home(Frame):
         line.append(data[:3])
         line.append(data[-5:])
         print 'current select  ', line
-        Label(text=self.movie_name[data[:3]][:12], fg='white', bg ='#464646',\
-              font=tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=155, y=545)
-        Label(text=data[:3], fg='white', bg ='#464646',\
-              font='Angsna 9 italic').place(x=155, y=575)
+        self.current_name = Label(text=self.movie_name[data[:3]][:12], fg='white', bg ='#464646',
+                                   font=tkFont.Font(size = 20, weight=tkFont.BOLD))
+        self.current_name.place(x=155, y=545)
 
-        Label(text=data[-5:], fg='white', bg ='#464646', font=tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=445, y=545)
+        self.serial = Label(text=data[:3], fg='white', bg='#464646', font='Angsna 9 italic')
+        self.serial.place(x=155, y=575)
+
+        self.current_time = Label(text=data[-5:], fg='white', bg='#464646',
+                                  font=tkFont.Font(size=20, weight=tkFont.BOLD))
+        self.current_time.place(x=445, y=545)
 
         self.SUBMIT.config(state='normal')
 
@@ -51,7 +57,6 @@ class Home(Frame):
         time_data = open('time.txt', 'r')
         time = [map(lambda x: x, i.split()) for i in time_data]
 
-        time_button = []
         #showtime_bg = Label(frame_1, width=100)
         #showtime_bg.place(x=440, y =100)
 
@@ -141,13 +146,16 @@ class Home(Frame):
 
         #make buttom nGui
         def back():
-            frame_2.place_forget()
-            frame_3.place_forget()
-            frame_4.place_forget()
-            poster.place_forget()
-            seat_bg.place_forget()
+            frame_2.destroy()
+            frame_3.destroy()
+            frame_4.destroy()
+            poster.destroy()
+            seat_bg.destroy()
+            self.current_name.destroy()
+            self.current_time.destroy()
+            self.serial.destroy()
             seat[:] = []
-            self.home_page_template()
+            self.frame.place(x=0, y=0)
         def send_data():
             price = 80
             # define ticket cost here
@@ -158,8 +166,8 @@ class Home(Frame):
             qty = len(seat)
             self.line.append(str(qty).zfill(2))
             self.line.append(str(qty*price))
-            self.line.append(str(seat[0]+' - '+seat[-1]))
-            self.line[2] = self.line[2][:2]+' : '+self.line[2][-2:]
+            self.line.append(str(seat[0]+seat[-1]))
+            self.line[2] = self.line[2][:2]+self.line[2][-2:]
             print self.line
             data = ' '.join(self.line)
             print data
@@ -171,7 +179,7 @@ class Home(Frame):
                     '\n Price     : '+ self.line[5]+' Bath'+ \
                     '\n Seat No.  : '+ self.line[6]):
                 data_list = open('data.txt', 'a+')
-                data_list.writelines(data)
+                data_list.write(data+'\n')
                 tkMessageBox.showinfo(title='Success!', message='Saved\nYour ticket is available')
                 data_list.close()
             else :
@@ -231,9 +239,12 @@ class Home(Frame):
             print 'you can select left', self.left, 'right', self.right
 
 
-        seat_char = "-ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        seat_char = "-ABCDEFGHIJKL"
 
         booked = [i[2] for i in self.check_booked() if i[0] == self.line[1] and i[1] == self.line[2]]
+        booked.sort()
+        for i in booked:
+            print i
 
         for i in xrange(1, 13):
             for j in xrange(9):
@@ -243,10 +254,11 @@ class Home(Frame):
                 chkbut.config(command=lambda v=var2, but=chkbut: var_states(v, but))
                 chkbut.grid(row=i, column=j)
                 if len(booked) > 0:
-                    if booked[0][0] == seat_char[i] and j in xrange(int(booked[0][1])-1, int(booked[0][3])+1):
-                        chkbut.select()
-                        chkbut.config(state='disabled')
-                        if j >= int(booked[0][3]):
+                    if booked[0][0] == seat_char[i]:
+                        if j in xrange(int(booked[0][1])-1, int(booked[0][3])+1):
+                            chkbut.select()
+                            chkbut.config(state='disabled')
+                        if j == 8:
                             del booked[0]
                 seat_button.append(chkbut)
 
@@ -257,6 +269,7 @@ class Home(Frame):
         booked_all = [j for j in [map(lambda x: x, i.split()) for i in seat_file.read().splitlines()]]
         booked = [[x[1], x[2][:2]+'.'+x[2][-2:], x[6]] for x in booked_all if x[0] == today]
         seat_file.close()
+        print booked
         return booked
 
     def home_page_template(self):
@@ -284,7 +297,7 @@ class Home(Frame):
         self.time_select(frame_1)
 
 def out():
-    if tkMessageBox.askyesno(title="Quit",message="Are You Sure"):
+    if tkMessageBox.askyesno(title="Quit",message="Are you sure?"):
         quit()
 
 def make_menu(frame):
@@ -296,7 +309,7 @@ def make_menu(frame):
         tkMessageBox.showinfo(title='Help Docs',message='This application help you to booking movies \n - select your movie and seat')
         return
     def creator():
-        tkMessageBox.showinfo(title='Creator',message='     CREAT BY \n57070041 Traisak Traisenee \n57070078 Patcharapon Sophon')
+        tkMessageBox.showinfo(title='Creator',message='     CREATED BY \n57070041 Traisak Traisenee \n57070078 Patcharapon Sophon')
         return
     def thanks():
         tkMessageBox.showinfo(title='Thanks',message='    THANKS  \n Chotipat Pornavalai ')
