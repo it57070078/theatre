@@ -160,7 +160,7 @@ class Home(Frame):
             price = 80
             # define ticket cost here
             if len(self.name.get()) != 0:
-                self.line.append(str(self.name.get()))
+                self.line.append('-'.join(str(self.name.get()).split()))
             else:
                 self.line.append('-Anonymous-')
             qty = len(seat)
