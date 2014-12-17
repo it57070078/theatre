@@ -53,8 +53,10 @@ class Theatre():
         mainloop()
 
     def update_date(self):
-        '''show last update time'''
-        Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y'), font = 'angsana 12 italic').place(x = 310, y = 15)
+        '''show last 10 ticket data on'''
+        Label(self.root, bg='white', justify='left',
+              text=strftime('Last 7 tickets data on \n%A %d %B, %Y'),
+              font='angsana 12 italic').place(x=310, y=15)
 
     f_data = open('data.txt', 'r')
     data = [map(lambda x: x, i.split()) for i in f_data]
