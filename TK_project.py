@@ -18,12 +18,9 @@ class Home(Frame):
     Create Home page for enable User choose movie and their show time
     """
     def __init__(self, master=None):
-        self.content[:] = []
         Frame.__init__(self, master)
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
-        self.frame = LabelFrame(self.home, width=800,height=600, bg='#464646')
         self.home_page_template()
-        self.time_select(self.frame)
 
     movie_data = open('movie_name.txt', 'r')
     movie_name = dict((i, j) for i, j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
@@ -82,8 +79,6 @@ class Home(Frame):
                 x += 60
                 count += 1
 
-
-
     def seat_part(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
 
@@ -92,12 +87,12 @@ class Home(Frame):
         poster.image = pic
         poster.place(x=0, y=55)
 
-        frame_2 = LabelFrame(self.home, width=400,height=400, bg='#464646')
-        frame_2.place(x=80,y=150)
+        frame_2 = LabelFrame(self.home, width=400, height=400, bg='#464646')
+        frame_2.place(x=80, y=150)
         frame_3 = LabelFrame(self.home, width=100, bg='#464646')
-        frame_3.place(x=520,y=150)
+        frame_3.place(x=520, y=150)
         frame_4 = LabelFrame(self.home, width=100, bg='red')
-        frame_4.place(x=80,y=650)
+        frame_4.place(x=80, y=650)
 
         seat_bg = Label(frame_2,text = 'here',bg='#464646')
         seat_bg.pack()
@@ -125,11 +120,8 @@ class Home(Frame):
             frame_4.place_forget()
             poster.place_forget()
             seat_bg.place_forget()
-
             seat[:] = []
-            self.order = 'refresh'
-            self.__init__()
-
+            self.home_page_template()
         def send_data():
             price = 80
             # define ticket cost here
@@ -247,6 +239,7 @@ class Home(Frame):
     def home_page_template(self):
         frame_1 = self.frame
         frame_1.place(x=0, y=0)
+        self.content[:] = []
         def close_frame(frame):
             frame.place_forget()
             self.seat_part()
@@ -283,8 +276,7 @@ class Home(Frame):
                   fg='white',bg='#2E8B57', font='Helvetica 12 bold italic').place(x=x+165, y = y+10)
             y += 110
 
-        return frame_1
-
+        self.time_select(frame_1)
 
 def out():
     if tkMessageBox.askyesno(title="Quit",message="Are You Sure"):
@@ -328,5 +320,6 @@ def run_app():
     mGui.config(menu=make_menu(mGui))
     app = page(mGui)
     app.mainloop()
+
 run_app()
 #-------------------------------Done----------------------------#
