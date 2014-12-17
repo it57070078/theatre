@@ -10,12 +10,13 @@ from datetime import datetime
 import tkMessageBox
 import sys
 
-class Theatre:
+class Theatre():
     '''
     Represent frame of theatre manager
     '''
 
     def __init__(self):
+
         self.root = Tk()
         self.root.geometry("800x500")
         self.root.resizable(width=FALSE, height=FALSE)
@@ -45,16 +46,17 @@ class Theatre:
         template()
 
         self.round_manage()
-        self.button_inframe()
+        self.button_in_frame()
         self.show_detail_list()
         self.show_overview()
         self.show_current_time('show')
-
         mainloop()
 
     def update_date(self):
-        '''show last update time'''
-        Label(self.root, bg='white', text=strftime('Last update : %A %d %B %Y'), font = 'angsana 12 italic').place(x = 310, y = 15)
+        '''show last 10 ticket data on'''
+        Label(self.root, bg='white', justify='left',
+              text=strftime('Last 7 tickets data on \n%A %d %B, %Y'),
+              font='angsana 12 italic').place(x=310, y=15)
 
     f_data = open('data.txt', 'r')
     data = [map(lambda x: x, i.split()) for i in f_data]
@@ -64,25 +66,25 @@ class Theatre:
     movie_data = open('movie_name.txt', 'r')
     movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
 
-    def button_inframe(self):
+    def button_in_frame(self):
         ''' show all button'''
 
         close_butt = Button(self.root, text = 'Close', command = quit)
-        close_butt.place(x = 690, y = 460, width = 50, height = 20)  #Close program
+        close_butt.place(x=690, y=460, width=50, height=20)  #Close program
         self.button_list.append(close_butt)
 
-        detail_but = Button(self.root, text = 'Detail',command = self.show_movie_list)
-        detail_but.place(x = 620, y = 460, width = 50, height = 20) #Description of frame composition
+        detail_but = Button(self.root, text='Detail', command = self.show_movie_list)
+        detail_but.place(x=620, y=460, width=50, height=20) #Description of frame composition
         self.button_list.append(detail_but)
 
-        edit_but = Button(self.root, text = 'Edit' , command=self.edit_time)
-        edit_but.place(x = 440, y = 460, width = 50, height = 20) #Open Edit mode
+        edit_but = Button(self.root, text = 'Edit', command=self.edit_time)
+        edit_but.place(x=440, y=460, width=50, height=20) #Open Edit mode
         self.button_list.append(edit_but)
 
-        update_butt = Button(self.root, text = 'Update' , command=self.save_setting)
+        update_butt = Button(self.root, text='Update', command=self.save_setting)
         self.button_list.append(update_butt)
 
-    def show_detail_list(self,bg_color = 'black'):
+    def show_detail_list(self, bg_color='black'):
         """ show list of data and detail (included date,movie,time,name,amout, price ,seat)"""
         y, num = 90, len(self.data)
         data = self.data
@@ -99,7 +101,7 @@ class Theatre:
         r = 0
         list_bg = Label(self.root,bg=bg_color)
         list_bg.place(x=0, y=y,width = 800,height = 140)
-        w = [3, 15, 14, 14, 24, 4, 16, 12]
+        column_width = [3, 15, 14, 14, 24, 4, 16, 12]
         for i in data[-num:-(num-7)]:
             text = '#00be8f'
             seq =  str(num)+'.'
@@ -110,7 +112,7 @@ class Theatre:
             line = [seq, watch_date, i[1], time, name, str(int(i[4])), i[5], seat]
 
             for j in xrange(8):
-                Label(list_bg, bg=bg_color, fg=text, text=line[j], width= w[j], justify='center').grid(row=r, column=j, sticky=W)
+                Label(list_bg, bg=bg_color, fg=text, text=line[j], width=column_width[j], justify='center').grid(row=r, column=j, sticky=W)
             num -= 1
             r += 1
 
@@ -281,6 +283,7 @@ class Theatre:
         tkMessageBox.showinfo(title='Saved',message='Your new setting is updated')
 
     def show_movie_list(self):
+        self.button_list[1].config(state='disabled')
         info = Label(self.root, text='info', width=30, height=50, justify='left')
         info.place(x=295, y=250)
         Label(info, text='Movie list',justify='left', bg='gray', fg='white').grid(row=0)
@@ -289,7 +292,8 @@ class Theatre:
             Label(info, text=str(self.movie_name[i]), justify='right').grid()
         def close():
             info.place_forget()
-        Button(info, text="Close", command= close).grid()
+            self.button_list[1].config(state='normal')
+        Button(info, text="Close", command=close).grid()
 
 Theatre()
 

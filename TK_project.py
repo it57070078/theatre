@@ -5,7 +5,9 @@ import tkMessageBox
 import tkFont
 import ttk
 
+#Upload to Branch Test
 #make time select
+
 time_button = []
 seat_button = []
 seat = []
@@ -21,9 +23,10 @@ class Home(Frame):
         self.home_page_template()
 
     movie_data = open('movie_name.txt', 'r')
-    movie_name = dict( (i,j) for i,j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
+    movie_name = dict((i, j) for i, j in [map(lambda x=i[-3:]: x, i.split(',')) for i in movie_data.read().splitlines()])
 
     line = []
+    content = []
     def selected(self, val):
         """show button value after press, and append to current select name "line" """
         print 'opening selected'
@@ -31,16 +34,21 @@ class Home(Frame):
         line = self.line
         data = val
         date = 'date_'+strftime('%d/%m/')+str(int(strftime('%Y'))+543)
+
         line.append(date)
         line.append(data[:3])
         line.append(data[-5:])
         print 'current select  ', line
-        Label(text=self.movie_name[data[:3]][:12], fg='white', bg ='#464646',\
-              font=tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=155, y=545)
-        Label(text=data[:3], fg='white', bg ='#464646',\
-              font='Angsna 9 italic').place(x=155, y=575)
+        self.current_name = Label(text=self.movie_name[data[:3]][:12], fg='white', bg ='#464646',
+                                   font=tkFont.Font(size = 20, weight=tkFont.BOLD))
+        self.current_name.place(x=155, y=545)
 
-        Label(text=data[-5:], fg='white', bg ='#464646', font=tkFont.Font(size = 20, weight=tkFont.BOLD)).place(x=445, y=545)
+        self.serial = Label(text=data[:3], fg='white', bg='#464646', font='Angsna 9 italic')
+        self.serial.place(x=155, y=575)
+
+        self.current_time = Label(text=data[-5:], fg='white', bg='#464646',
+                                  font=tkFont.Font(size=20, weight=tkFont.BOLD))
+        self.current_time.place(x=445, y=545)
 
         self.SUBMIT.config(state='normal')
 
@@ -52,10 +60,36 @@ class Home(Frame):
         #showtime_bg = Label(frame_1, width=100)
         #showtime_bg.place(x=440, y =100)
 
-        for i in self.content:
-            print self.content
-        '''define default value and command for all button'''
+        if len(self.content) > 0:
+            for i in self.content:
+                print i,'to',
+                i = []
+                print i
 
+        '''Make Content for add time button in their frame'''
+        #Define content position here
+        y, x = 95, 10
+        for i in xrange(4):
+            Canvas(frame_1, height = 100, width= 270, bg='#2E8B57').place(x=x+122, y=y)
+            poster_pic = PhotoImage(file=pic_list[i])
+            poster = Label(frame_1, image=poster_pic)
+            poster.image = poster_pic
+            poster.place(x=x, y=y-10)
+            show_time = Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57')
+            show_time.place(x=x+422, y=y)
+            self.content.append(show_time)
+            Label(frame_1, text=str('(Cinema '+str(int(pic_list[i][:3]))+')'),
+                  fg='white',bg='#2E8B57', font='angsna 9').place(x=x+165, y=y+35)
+            Label(frame_1, text=str(self.movie_name[pic_list[i][:3]])[:25],
+                  fg='white',bg='#2E8B57', font='Helvetica 12 bold italic').place(x=x+165, y =y+10)
+            y += 110
+
+        if len(self.content) > 0:
+            print 'after'
+            for i in self.content:
+                print i
+
+        '''define default value and command for all button'''
         for i in xrange(len(time)):
             time_button.append([])
             for j in xrange(1, len(time[i])):
@@ -76,8 +110,6 @@ class Home(Frame):
                 x += 60
                 count += 1
 
-
-
     def seat_part(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
 
@@ -86,18 +118,18 @@ class Home(Frame):
         poster.image = pic
         poster.place(x=0, y=55)
 
-        frame_2 = LabelFrame(self.home, width=400,height=400, bg='#464646')
-        frame_2.place(x=80,y=150)
+        frame_2 = LabelFrame(self.home, width=400, height=400, bg='#464646')
+        frame_2.place(x=80, y=150)
         frame_3 = LabelFrame(self.home, width=100, bg='#464646')
-        frame_3.place(x=520,y=150)
+        frame_3.place(x=520, y=150)
         frame_4 = LabelFrame(self.home, width=100, bg='red')
-        frame_4.place(x=80,y=650)
+        frame_4.place(x=80, y=650)
 
         seat_bg = Label(frame_2,text = 'here',bg='#464646')
         seat_bg.pack()
 
         #make name input
-        nlabel6 = Label(frame_3,text='Name',bg = '#464646', fg = 'gray',font='Helvetica 10 italic').pack()
+        nlabel6 = Label(frame_3,text='Please fill your name',bg = '#464646', fg = 'gray',font='Helvetica 10 italic').pack()
 
         self.name = StringVar()
         name_data = Entry(frame_3, width = 32, justify='center', textvariable=self.name)
@@ -107,105 +139,144 @@ class Home(Frame):
         #make seat input
         Label(frame_3,text='Selected seat',bg = '#464646', fg='gray', font='Helvetica 10 italic').pack()
 
-        self.current_seat = Label(frame_3, text ='-- check some available seat --', font='Angsna 10 italic',fg='red')
+        self.current_seat = Label(frame_3, text ='-- check some available seat --', width=24, font='Angsna 10 italic', fg='blue')
         self.current_seat.pack()
-
-
         butt_bar = Label(frame_3, bg = '#464646')
         butt_bar.pack()
+
         #make buttom nGui
         def back():
-            frame_2.place_forget()
-            frame_3.place_forget()
-            frame_4.place_forget()
-            poster.place_forget()
+            frame_2.destroy()
+            frame_3.destroy()
+            frame_4.destroy()
+            poster.destroy()
+            seat_bg.destroy()
+            self.current_name.destroy()
+            self.current_time.destroy()
+            self.serial.destroy()
+            seat[:] = []
             self.frame.place(x=0, y=0)
-
         def send_data():
-            price = 80 # define ticket cost here
+            price = 80
+            # define ticket cost here
             if len(self.name.get()) != 0:
                 self.line.append(str(self.name.get()))
-            else :
+            else:
                 self.line.append('-Anonymous-')
             qty = len(seat)
             self.line.append(str(qty).zfill(2))
             self.line.append(str(qty*price))
             self.line.append(str(seat[0]+seat[-1]))
-            self.line[2] = self.line[2][:2] + self.line[2][-2:]
+            self.line[2] = self.line[2][:2]+self.line[2][-2:]
             print self.line
             data = ' '.join(self.line)
             print data
             if tkMessageBox.askyesno(title="Confirm", message="Your ticket is \n  "+self.line[0]+\
                     '\n Movie     : '+ self.movie_name[self.line[1]]+\
-                    '\n Show Time : '+ self.line[2]+ \
+                    '\n Show Time : '+ self.line[2]+\
                     '\n Customer  : '+ self.line[3]+ \
                     '\n Amount    : '+ self.line[4]+ \
                     '\n Price     : '+ self.line[5]+' Bath'+ \
                     '\n Seat No.  : '+ self.line[6]):
                 data_list = open('data.txt', 'a+')
-                data_list.writelines(data+'\n')
-                tkMessageBox.showinfo(title='Success!',message='Saved\nYour ticket is available')
+                data_list.write(data+'\n')
+                tkMessageBox.showinfo(title='Success!', message='Saved\nYour ticket is available')
+                data_list.close()
+            else :
+                self.line[:] = []
+                seat[:] = []
+                print self.line
             back()
-
-
-        Button(butt_bar, text = 'Submit', command =send_data).grid(row =0,column=0)
 
         def clear_all():
             if len(seat):
                 for i in seat_button:
                     i.deselect()
                 self.current_seat.config(text='-- check some available seat --')
-                seat.__delslice__(0, len(seat)-1)
-                seat.remove(seat[0])
+                seat[:] = []
                 print seat
 
             else:
                 pass
-        Button(butt_bar, text = 'New movie',command = back).grid(row =0, column=1)
-        Button(butt_bar, text = 'Clear',command = clear_all).grid(row =0, column=2)
+        # Create option bar contain button and thumbnail
+        thumb = PhotoImage(file=pic_dict[self.line[1]])
+        thumbnail = Label(butt_bar, image=thumb)
+        thumbnail.image = thumb
+        thumbnail.grid(row=0)
+        Label(butt_bar, text='Option',bg = '#464646', fg='gray', font='Helvetica 10 italic').grid(row=1)
+        Button(butt_bar, text='Submit', width=21, command=send_data).grid()
+        Button(butt_bar, text='New movie', width=21, command =back).grid()
+        Button(butt_bar, text='Clear', width=21, command=clear_all).grid()
 
 
 
-        '''
-        pic = PhotoImage(file=pic_dict[line[1]])
-        poster = Label(frame_3, image=pic)
-        poster.image = pic
-        poster.grid(row=1)
-        '''
+        def var_states(val, but):
+            def cleared(text):
+                tkMessageBox.showinfo(title='Sorry', message=text+'\n Try again please...')
+                but.deselect()
+                clear_all()
+                print 'cleared'
 
-        def var_states(val, chkbut):
             print "Select Seat: " + str(val.get())
             if len(seat) == 0:
                 seat.append(val.get())
                 self.current_seat.config(text=seat[0])
+                self.left, self.right = int(val.get()[1])-1, int(val.get()[1])+1
             else:
-                if (val.get())[0] == seat[0][0] or len(seat) == 0:
+                print seat[-1],
+                self.left, self.right = int(seat[-1][1])-1, int(seat[-1][1])+2
+
+                if int((val.get())[1]) in xrange(self.left, self.right) and (val.get())[0] == seat[0][0]:
                     seat.append(val.get())
-                    seat.sort()
                     self.current_seat.config(text=str(seat[0]+' - '+seat[-1]))
-                else :
-                    tkMessageBox.showinfo(title='Sorry',message='You can not select different row \n Try again please...')
-                    chkbut.deselect()
-                    clear_all()
+                elif int((val.get())[1]) not in xrange(self.left, self.right):
+                    cleared('You can not put space between your seat')
+                elif (val.get())[0] != seat[0][0]:
+                    cleared('You can not select different row')
+                else:
+                    cleared('Unknow type error')
 
-        seat_char = "-ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            print 'you can select left', self.left, 'right', self.right
 
-        for i in xrange(1,13):
+
+        seat_char = "-ABCDEFGHIJKL"
+
+        booked = [i[2] for i in self.check_booked() if i[0] == self.line[1] and i[1] == self.line[2]]
+        booked.sort()
+        for i in booked:
+            print i
+
+        for i in xrange(1, 13):
             for j in xrange(9):
                 var2 = StringVar()
                 chkbut = Checkbutton(seat_bg, text=seat_char[i]+str(j+1), bg='#464646',)
                 chkbut.config(variable=var2.set(seat_char[i]+str(j+1)))
                 chkbut.config(command=lambda v=var2, but=chkbut: var_states(v, but))
                 chkbut.grid(row=i, column=j)
+                if len(booked) > 0:
+                    if booked[0][0] == seat_char[i]:
+                        if j in xrange(int(booked[0][1])-1, int(booked[0][3])+1):
+                            chkbut.select()
+                            chkbut.config(state='disabled')
+                        if j == 8:
+                            del booked[0]
                 seat_button.append(chkbut)
 
-    content = []
+    def check_booked(self):
+        '''check booked seat'''
+        seat_file = open("data.txt", 'r')
+        today = 'date_'+strftime('%d/%m/')+str(int(strftime('%Y'))+543)
+        booked_all = [j for j in [map(lambda x: x, i.split()) for i in seat_file.read().splitlines()]]
+        booked = [[x[1], x[2][:2]+'.'+x[2][-2:], x[6]] for x in booked_all if x[0] == today]
+        seat_file.close()
+        print booked
+        return booked
 
     def home_page_template(self):
         self.home = Label(self,  width=800,height=600, bg='#464646').place(x=0, y=0)
         self.frame = LabelFrame(self.home, width=800,height=600, bg='#464646')
         frame_1 = self.frame
-        frame_1.place(x=0,y=0)
+        frame_1.place(x=0, y=0)
         def close_frame(frame):
             frame.place_forget()
             self.seat_part()
@@ -223,30 +294,10 @@ class Home(Frame):
         Label(frame_1, text='Current Movie :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=15 ,y=550)
         Label(frame_1, text='Round :',bg = '#464646',  font = tkFont.Font(size = 15, weight=tkFont.NORMAL)).place(x=365 ,y=550)
 
-        #make Content
-
-
-        y, x = 95, 10 #Define content position here
-        for i in xrange(4):
-            Canvas(frame_1,height = 100,width= 270,bg = '#2E8B57').place(x=x+122, y=y)
-            poster_pic = PhotoImage(file=pic_list[i])
-            poster = Label(frame_1, image=poster_pic)
-            poster.image = poster_pic
-            poster.place(x = x, y = y-10)
-            show_time = Canvas(frame_1, height = 100,width= 270,bg = '#2E8B57')
-            show_time.place(x=x+422, y=y)
-            self.content.append(show_time)
-            Label(frame_1, text=str('(Cinema '+str(int(pic_list[i][:3]))+')'), \
-                  fg='white',bg='#2E8B57', font='angsna 9').place(x=x+165, y = y+35)
-            Label(frame_1, text=str(self.movie_name[pic_list[i][:3]])[:25],\
-                  fg='white',bg='#2E8B57', font='Helvetica 12 bold italic').place(x=x+165, y = y+10)
-            y += 110
-
         self.time_select(frame_1)
 
-
 def out():
-    if tkMessageBox.askyesno(title="Quit",message="Are You Sure"):
+    if tkMessageBox.askyesno(title="Quit",message="Are you sure?"):
         quit()
 
 def make_menu(frame):
@@ -258,7 +309,7 @@ def make_menu(frame):
         tkMessageBox.showinfo(title='Help Docs',message='This application help you to booking movies \n - select your movie and seat')
         return
     def creator():
-        tkMessageBox.showinfo(title='Creator',message='     CREAT BY \n57070041 Traisak Traisenee \n57070078 Patcharapon Sophon')
+        tkMessageBox.showinfo(title='Creator',message='     CREATED BY \n57070041 Traisak Traisenee \n57070078 Patcharapon Sophon')
         return
     def thanks():
         tkMessageBox.showinfo(title='Thanks',message='    THANKS  \n Chotipat Pornavalai ')
@@ -278,7 +329,8 @@ def make_menu(frame):
     menubar.add_cascade(label="Help", menu=helpmenu)
     return menubar
 
-def run_app(page):
+def run_app():
+    page = Home
     mGui = Tk()
     mGui.geometry('800x600+550+200')
     mGui.title('Theatre Manager')
@@ -286,5 +338,6 @@ def run_app(page):
     mGui.config(menu=make_menu(mGui))
     app = page(mGui)
     app.mainloop()
-run_app(Home)
+
+run_app()
 #-------------------------------Done----------------------------#
